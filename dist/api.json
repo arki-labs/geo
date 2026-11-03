@@ -1,0 +1,1402 @@
+{
+  "package": "@arki/geo",
+  "version": "0.2.0",
+  "entries": [
+    {
+      "subpath": ".",
+      "name": "AddressNotFound",
+      "kind": "variable",
+      "signature": "export declare const AddressNotFound: import(\"@arki/failure\").FailureDefinition<\"geo.address_not_found\", import(\"@standard-schema/spec\").StandardSchemaV1<{ address: string; }, { address: string; }>>;",
+      "jsdocSummary": "Every provider that answered found nothing for this address. Not cached, so a later lookup asks again."
+    },
+    {
+      "subpath": ".",
+      "name": "bearingToDirection",
+      "kind": "function",
+      "signature": "export declare function bearingToDirection(bearing: number): Direction;",
+      "jsdocSummary": "Get compass direction from bearing"
+    },
+    {
+      "subpath": ".",
+      "name": "Bounds",
+      "kind": "type",
+      "signature": "export type Bounds = { north: number; south: number; east: number; west: number; };",
+      "jsdocSummary": "Represents a geographic bounding box"
+    },
+    {
+      "subpath": ".",
+      "name": "boundsContains",
+      "kind": "function",
+      "signature": "export declare function boundsContains(bounds1: Bounds, bounds2: Bounds): boolean;",
+      "jsdocSummary": "Check if bounds1 contains bounds2"
+    },
+    {
+      "subpath": ".",
+      "name": "BoundsError",
+      "kind": "class",
+      "signature": "export declare class BoundsError extends GeoError { constructor(message: string, cause?: unknown); }",
+      "jsdocSummary": "Error thrown when bounds calculations fail"
+    },
+    {
+      "subpath": ".",
+      "name": "boundsIntersect",
+      "kind": "function",
+      "signature": "export declare function boundsIntersect(bounds1: Bounds, bounds2: Bounds): boolean;",
+      "jsdocSummary": "Check if two bounds intersect"
+    },
+    {
+      "subpath": ".",
+      "name": "calculateBearing",
+      "kind": "function",
+      "signature": "export declare function calculateBearing(point1: Coordinates, point2: Coordinates): number;",
+      "jsdocSummary": "Calculate the bearing (direction) from point1 to point2"
+    },
+    {
+      "subpath": ".",
+      "name": "calculateDestination",
+      "kind": "function",
+      "signature": "export declare function calculateDestination(point: Coordinates, distance: number, bearing: number): Coordinates;",
+      "jsdocSummary": "Calculate destination point given distance and bearing from start point"
+    },
+    {
+      "subpath": ".",
+      "name": "calculateDistance",
+      "kind": "function",
+      "signature": "export declare function calculateDistance(point1: Coordinates, point2: Coordinates, unit?: DistanceUnit): number;",
+      "jsdocSummary": "Calculate the great-circle distance between two points using the Haversine formula"
+    },
+    {
+      "subpath": ".",
+      "name": "calculateMidpoint",
+      "kind": "function",
+      "signature": "export declare function calculateMidpoint(point1: Coordinates, point2: Coordinates): Coordinates;",
+      "jsdocSummary": "Calculate the midpoint between two coordinates"
+    },
+    {
+      "subpath": ".",
+      "name": "CONVERSION_FACTORS",
+      "kind": "variable",
+      "signature": "export declare const CONVERSION_FACTORS: { readonly KM_TO_MI: 0.621371; readonly MI_TO_KM: 1.60934; readonly KM_TO_M: 1000; readonly M_TO_KM: 0.001; readonly MI_TO_FT: 5280; readonly FT_TO_MI: 0.000189394; };",
+      "jsdocSummary": "Conversion factors"
+    },
+    {
+      "subpath": ".",
+      "name": "convertDistance",
+      "kind": "function",
+      "signature": "export declare function convertDistance(distance: number, fromUnit: DistanceUnit, toUnit: DistanceUnit): number;",
+      "jsdocSummary": "Convert distance between units"
+    },
+    {
+      "subpath": ".",
+      "name": "Coordinates",
+      "kind": "type",
+      "signature": "export type Coordinates = { lat: number; lng: number; };",
+      "jsdocSummary": "Represents geographic coordinates using WGS84 datum"
+    },
+    {
+      "subpath": ".",
+      "name": "coordinatesEqual",
+      "kind": "function",
+      "signature": "export declare function coordinatesEqual(coords1: Coordinates, coords2: Coordinates, epsilon?: number): boolean;",
+      "jsdocSummary": "Check if two coordinates are approximately equal"
+    },
+    {
+      "subpath": ".",
+      "name": "coordinatesFromUrl",
+      "kind": "function",
+      "signature": "export declare function coordinatesFromUrl(urlParam: string): Coordinates | InvalidCoordinates;",
+      "jsdocSummary": "Parse coordinates from URL parameter"
+    },
+    {
+      "subpath": ".",
+      "name": "coordinatesToUrl",
+      "kind": "function",
+      "signature": "export declare function coordinatesToUrl(coords: Coordinates): string;",
+      "jsdocSummary": "Convert coordinates to URL-safe string"
+    },
+    {
+      "subpath": ".",
+      "name": "createBoundsFromCoordinates",
+      "kind": "function",
+      "signature": "export declare function createBoundsFromCoordinates(coordinates: Coordinates[]): Bounds;",
+      "jsdocSummary": "Create bounds from an array of coordinates"
+    },
+    {
+      "subpath": ".",
+      "name": "createBoundsFromRadius",
+      "kind": "function",
+      "signature": "export declare function createBoundsFromRadius(center: Coordinates, radiusKm: number): Bounds;",
+      "jsdocSummary": "Create bounds from a center point and radius"
+    },
+    {
+      "subpath": ".",
+      "name": "decimalToDMS",
+      "kind": "function",
+      "signature": "export declare function decimalToDMS(decimal: number): { degrees: number; minutes: number; seconds: number; direction: 'N' | 'S' | 'E' | 'W'; };",
+      "jsdocSummary": "Convert Decimal Degrees to Degrees, Minutes, Seconds"
+    },
+    {
+      "subpath": ".",
+      "name": "Direction",
+      "kind": "type",
+      "signature": "export type Direction = 'N' | 'NNE' | 'NE' | 'ENE' | 'E' | 'ESE' | 'SE' | 'SSE' | 'S' | 'SSW' | 'SW' | 'WSW' | 'W' | 'WNW' | 'NW' | 'NNW';",
+      "jsdocSummary": "Cardinal and intercardinal directions"
+    },
+    {
+      "subpath": ".",
+      "name": "DistanceUnit",
+      "kind": "type",
+      "signature": "export type DistanceUnit = 'km' | 'mi' | 'm' | 'ft';",
+      "jsdocSummary": "Distance units"
+    },
+    {
+      "subpath": ".",
+      "name": "dmsToDecimal",
+      "kind": "function",
+      "signature": "export declare function dmsToDecimal(degrees: number, minutes: number, seconds: number, direction: 'N' | 'S' | 'E' | 'W'): number;",
+      "jsdocSummary": "Convert Degrees, Minutes, Seconds to Decimal Degrees"
+    },
+    {
+      "subpath": ".",
+      "name": "EARTH_RADIUS_KM",
+      "kind": "variable",
+      "signature": "export declare const EARTH_RADIUS_KM = 6371;",
+      "jsdocSummary": "Earth radius in kilometers"
+    },
+    {
+      "subpath": ".",
+      "name": "EARTH_RADIUS_MI",
+      "kind": "variable",
+      "signature": "export declare const EARTH_RADIUS_MI = 3959;",
+      "jsdocSummary": "Earth radius in miles"
+    },
+    {
+      "subpath": ".",
+      "name": "extendBounds",
+      "kind": "function",
+      "signature": "export declare function extendBounds(bounds: Bounds, coord: Coordinates): Bounds;",
+      "jsdocSummary": "Extend bounds to include a coordinate"
+    },
+    {
+      "subpath": ".",
+      "name": "formatBounds",
+      "kind": "function",
+      "signature": "export declare function formatBounds(bounds: Bounds, precision?: number): string;",
+      "jsdocSummary": "Format bounds as a string"
+    },
+    {
+      "subpath": ".",
+      "name": "formatCoordinates",
+      "kind": "function",
+      "signature": "export declare function formatCoordinates(coords: Coordinates, precision?: number): string;",
+      "jsdocSummary": "Format coordinates as a human-readable string"
+    },
+    {
+      "subpath": ".",
+      "name": "formatCoordinatesDMS",
+      "kind": "function",
+      "signature": "export declare function formatCoordinatesDMS(coords: Coordinates): string;",
+      "jsdocSummary": "Format coordinates in Degrees, Minutes, Seconds (DMS) format"
+    },
+    {
+      "subpath": ".",
+      "name": "fromStandardCoordinates",
+      "kind": "function",
+      "signature": "export declare function fromStandardCoordinates(coords: Coordinates, format: 'latLng' | 'latitudeLongitude' | 'latLon'): { lat: number; lng: number; } | { latitude: number; longitude: number; } | { lat: number; lon: number; };",
+      "jsdocSummary": "Convert standard coordinates to alternative formats"
+    },
+    {
+      "subpath": ".",
+      "name": "GeocodingCancelled",
+      "kind": "variable",
+      "signature": "export declare const GeocodingCancelled: import(\"@arki/failure\").FailureDefinition<\"geo.cancelled\", undefined>; ; export type GeocodingCancelled = ReturnType<typeof GeocodingCancelled>;",
+      "jsdocSummary": "The lookup was cancelled through its `AbortSignal`. This is not a provider fault."
+    },
+    {
+      "subpath": ".",
+      "name": "GeoError",
+      "kind": "class",
+      "signature": "export declare class GeoError extends Error { readonly code: string; readonly cause?: unknown; constructor(message: string, code: string, cause?: unknown); }",
+      "jsdocSummary": "Base error class for all geo-related errors"
+    },
+    {
+      "subpath": ".",
+      "name": "getBoundsCenter",
+      "kind": "function",
+      "signature": "export declare function getBoundsCenter(bounds: Bounds): Coordinates;",
+      "jsdocSummary": "Get the center coordinate of bounds"
+    },
+    {
+      "subpath": ".",
+      "name": "getBoundsRadius",
+      "kind": "function",
+      "signature": "export declare function getBoundsRadius(bounds: Bounds): number;",
+      "jsdocSummary": "Get the approximate radius of bounds in kilometers Uses the distance from center to the furthest corner"
+    },
+    {
+      "subpath": ".",
+      "name": "InvalidCoordinates",
+      "kind": "variable",
+      "signature": "export declare const InvalidCoordinates: import(\"@arki/failure\").FailureDefinition<\"geo.invalid_coordinates\", import(\"@standard-schema/spec\").StandardSchemaV1<{ reason: string; }, { reason: string; }>>; ; export type InvalidCoordinates = ReturnType<typeof InvalidCoordinates>;",
+      "jsdocSummary": "Coordinates, or text that should hold coordinates, are not a valid latitude and longitude. Nothing was looked up."
+    },
+    {
+      "subpath": ".",
+      "name": "isCoordinateInBounds",
+      "kind": "function",
+      "signature": "export declare function isCoordinateInBounds(coord: Coordinates, bounds: Bounds): boolean;",
+      "jsdocSummary": "Check if a coordinate is within bounds"
+    },
+    {
+      "subpath": ".",
+      "name": "isValidCoordinates",
+      "kind": "function",
+      "signature": "export declare function isValidCoordinates(coords: Coordinates): boolean;",
+      "jsdocSummary": "Check whether coordinates are finite and within range"
+    },
+    {
+      "subpath": ".",
+      "name": "MapProviderError",
+      "kind": "class",
+      "signature": "export declare class MapProviderError extends GeoError { readonly provider: string; constructor(message: string, provider: string, cause?: unknown); }",
+      "jsdocSummary": "Error thrown when map provider initialization fails"
+    },
+    {
+      "subpath": ".",
+      "name": "NoAddressAtLocation",
+      "kind": "variable",
+      "signature": "export declare const NoAddressAtLocation: import(\"@arki/failure\").FailureDefinition<\"geo.no_address_at_location\", import(\"@standard-schema/spec\").StandardSchemaV1<{ latitude: number; longitude: number; }, { latitude: number; longitude: number; }>>;",
+      "jsdocSummary": "Every provider that answered found no address at these coordinates, such as a point at sea. Not cached."
+    },
+    {
+      "subpath": ".",
+      "name": "normalizeCoordinates",
+      "kind": "function",
+      "signature": "export declare function normalizeCoordinates(coords: Coordinates): Coordinates | InvalidCoordinates;",
+      "jsdocSummary": "Normalize coordinates to valid ranges"
+    },
+    {
+      "subpath": ".",
+      "name": "normalizeLatitude",
+      "kind": "function",
+      "signature": "export declare function normalizeLatitude(lat: number): number | InvalidCoordinates;",
+      "jsdocSummary": "Normalize latitude to -90 to 90 range (clamped)"
+    },
+    {
+      "subpath": ".",
+      "name": "normalizeLongitude",
+      "kind": "function",
+      "signature": "export declare function normalizeLongitude(lng: number): number | InvalidCoordinates;",
+      "jsdocSummary": "Normalize longitude to the -180 to 180 range by wrapping around the globe. Runs in constant time for any finite input."
+    },
+    {
+      "subpath": ".",
+      "name": "padBounds",
+      "kind": "function",
+      "signature": "export declare function padBounds(bounds: Bounds, percent: number): Bounds;",
+      "jsdocSummary": "Pad bounds by a percentage"
+    },
+    {
+      "subpath": ".",
+      "name": "parseCoordinates",
+      "kind": "function",
+      "signature": "export declare function parseCoordinates(str: string): Coordinates | InvalidCoordinates;",
+      "jsdocSummary": "Parse coordinates from a string Supports formats: - \"40.7128, -74.0060\" - \"40.7128,-74.0060\" - \"40.7128 -74.0060\""
+    },
+    {
+      "subpath": ".",
+      "name": "ProviderAttempt",
+      "kind": "type",
+      "signature": "export type ProviderAttempt = z.infer<typeof providerAttemptSchema>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": ".",
+      "name": "providerAttemptSchema",
+      "kind": "variable",
+      "signature": "export declare const providerAttemptSchema: z.ZodObject<{ provider: z.ZodString; kind: z.ZodEnum<{ rate_limited: \"rate_limited\"; rejected: \"rejected\"; unreachable: \"unreachable\"; }>; message: z.ZodString; }, z.core.$strip>;",
+      "jsdocSummary": "One provider's failed try, kept so a failure that ends the lookup still shows every provider."
+    },
+    {
+      "subpath": ".",
+      "name": "ProviderRateLimited",
+      "kind": "variable",
+      "signature": "export declare const ProviderRateLimited: import(\"@arki/failure\").FailureDefinition<\"geo.provider_rate_limited\", import(\"@standard-schema/spec\").StandardSchemaV1<{ provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; retryAfterMs?: number | undefined; }, { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; retryAfterMs?: number | undefined; }>>; ; export type ProviderRateLimited = ReturnType<typeof ProviderRateLimited>;",
+      "jsdocSummary": "No provider answered and at least one said it is over its limit. `retryAfterMs` is that provider's `Retry-After`, when it sent one."
+    },
+    {
+      "subpath": ".",
+      "name": "ProviderRejected",
+      "kind": "variable",
+      "signature": "export declare const ProviderRejected: import(\"@arki/failure\").FailureDefinition<\"geo.provider_rejected\", import(\"@standard-schema/spec\").StandardSchemaV1<{ provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }, { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }>>; ; export type ProviderRejected = ReturnType<typeof ProviderRejected>;",
+      "jsdocSummary": "No provider answered and at least one refused the request: a bad or missing key, a denied account, or a malformed request. Retrying gives the same answer."
+    },
+    {
+      "subpath": ".",
+      "name": "ProviderUnreachable",
+      "kind": "variable",
+      "signature": "export declare const ProviderUnreachable: import(\"@arki/failure\").FailureDefinition<\"geo.provider_unreachable\", import(\"@standard-schema/spec\").StandardSchemaV1<{ provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }, { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }>>; ; export type ProviderUnreachable = ReturnType<typeof ProviderUnreachable>;",
+      "jsdocSummary": "No provider answered: each was down, timed out, or sent an unreadable answer. A later retry may work."
+    },
+    {
+      "subpath": ".",
+      "name": "roundCoordinates",
+      "kind": "function",
+      "signature": "export declare function roundCoordinates(coords: Coordinates, precision?: number): Coordinates;",
+      "jsdocSummary": "Round coordinates to specified precision"
+    },
+    {
+      "subpath": ".",
+      "name": "toStandardCoordinates",
+      "kind": "function",
+      "signature": "export declare function toStandardCoordinates(coords: { lat?: number; lng?: number; lon?: number; latitude?: number; longitude?: number; }): Coordinates | InvalidCoordinates;",
+      "jsdocSummary": "Convert coordinates from one format to Google Maps format Handles various input formats: - {latitude, longitude} - {lat, lng} - {lat, lon}"
+    },
+    {
+      "subpath": ".",
+      "name": "validateCoordinates",
+      "kind": "function",
+      "signature": "export declare function validateCoordinates(coords: Coordinates): Coordinates | InvalidCoordinates;",
+      "jsdocSummary": "Validate coordinates"
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "AddressComponents",
+      "kind": "type",
+      "signature": "export type AddressComponents = z.infer<typeof addressComponentsSchema>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "addressComponentsSchema",
+      "kind": "variable",
+      "signature": "export declare const addressComponentsSchema: z.ZodObject<{ streetAddress: z.ZodOptional<z.ZodString>; locality: z.ZodOptional<z.ZodString>; region: z.ZodOptional<z.ZodString>; postalCode: z.ZodOptional<z.ZodString>; country: z.ZodOptional<z.ZodString>; }, z.core.$strip>;",
+      "jsdocSummary": "Address components following Schema.org PostalAddress structure. `locality` is the city, `region` the state or province, `country` an ISO 3166-1 alpha-2 code."
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "BatchGeocodeEntry",
+      "kind": "type",
+      "signature": "export type BatchGeocodeEntry = Exclude<GeocodeOutcome, ReturnType<typeof GeocodingCancelled>>;",
+      "jsdocSummary": "What `batchGeocode` records for one address: everything a lookup returns except cancellation."
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "createGeocodingService",
+      "kind": "function",
+      "signature": "export declare function createGeocodingService(config: GeocodingConfig, kv?: GeocodingCache): GeocodingService;",
+      "jsdocSummary": "Create geocoding service instance from configuration"
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "GeocodeOutcome",
+      "kind": "type",
+      "signature": "export type GeocodeOutcome = Awaited<ReturnType<GeocodingService['geocode']>>;",
+      "jsdocSummary": "What a forward or reverse lookup returns."
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "GeocodeResult",
+      "kind": "type",
+      "signature": "export type GeocodeResult = z.infer<typeof geocodeResultSchema>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "geocodeResultSchema",
+      "kind": "variable",
+      "signature": "export declare const geocodeResultSchema: z.ZodObject<{ latitude: z.ZodNumber; longitude: z.ZodNumber; formattedAddress: z.ZodString; addressComponents: z.ZodObject<{ streetAddress: z.ZodOptional<z.ZodString>; locality: z.ZodOptional<z.ZodString>; region: z.ZodOptional<z.ZodString>; postalCode: z.ZodOptional<z.ZodString>; country: z.ZodOptional<z.ZodString>; }, z.core.$strip>; placeId: z.ZodOptional<z.ZodString>; provider: z.ZodEnum<{ geocodio: \"geocodio\"; google: \"google\"; here: \"here\"; locationiq: \"locationiq\"; mapbox: \"mapbox\"; nominatim: \"nominatim\"; opencage: \"opencage\"; }>; }, z.core.$strip>;",
+      "jsdocSummary": "Result from geocoding operation. Also the shape read back from the cache."
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "GEOCODING_PROVIDERS",
+      "kind": "variable",
+      "signature": "export declare const GEOCODING_PROVIDERS: readonly ['google', 'mapbox', 'nominatim', 'locationiq', 'here', 'opencage', 'geocodio'];",
+      "jsdocSummary": "Every supported provider, written once. The type, the env enum and the cache schema all read it."
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "GeocodingCache",
+      "kind": "type",
+      "signature": "export type GeocodingCache = Pick<KV, 'get' | 'set'>;",
+      "jsdocSummary": "The slice of `KV` the service needs. Any store with `get` and `set` fits."
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "GeocodingConfig",
+      "kind": "type",
+      "signature": "export type GeocodingConfig = { provider: GeocodingProvider; fallbackProviders: GeocodingProvider[]; google: { enabled: boolean; apiKey?: string; }; mapbox: { enabled: boolean; accessToken?: string; }; nominatim: { enabled: boolean; baseUrl?: string; }; locationiq: { enabled: boolean; apiKey?: string; }; here: { enabled: boolean; apiKey?: string; appId?: string; }; opencage: { enabled: boolean; apiKey?: string; }; geocodio: { enabled: boolean; apiKey?: string; }; cache: { enabled: boolean; ttl: number; keyPrefix: string; }; /** Longest wait for one provider answer, in milliseconds. Default 10000. */ timeoutMs?: number; };",
+      "jsdocSummary": "Configuration for geocoding service"
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "geocodingEnv",
+      "kind": "variable",
+      "signature": "export declare const geocodingEnv: Readonly<{ GEOCODING_PROVIDER: \"geocodio\" | \"google\" | \"here\" | \"locationiq\" | \"mapbox\" | \"nominatim\" | \"opencage\"; GEOCODING_FALLBACK_PROVIDERS: string; GOOGLE_MAPS_API_KEY?: string | undefined; MAPBOX_ACCESS_TOKEN?: string | undefined; NOMINATIM_BASE_URL?: string | undefined; LOCATIONIQ_API_KEY?: string | undefined; HERE_API_KEY?: string | undefined; HERE_APP_ID?: string | undefined; OPENCAGE_API_KEY?: string | undefined; GEOCODIO_API_KEY?: string | undefined; GEOCODING_CACHE_ENABLED: boolean; GEOCODING_CACHE_TTL: number; GEOCODING_CACHE_KEY_PREFIX: string; }>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "GeocodingEnv",
+      "kind": "type",
+      "signature": "export type GeocodingEnv = typeof geocodingEnv;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "GeocodingOptions",
+      "kind": "type",
+      "signature": "export type GeocodingOptions = { signal?: AbortSignal; };",
+      "jsdocSummary": "Options shared by every lookup."
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "GeocodingProvider",
+      "kind": "type",
+      "signature": "export type GeocodingProvider = (typeof GEOCODING_PROVIDERS)[number];",
+      "jsdocSummary": "Supported geocoding providers"
+    },
+    {
+      "subpath": "./geocoding",
+      "name": "GeocodingService",
+      "kind": "class",
+      "signature": "export declare class GeocodingService { private providerOptions; private primaryProvider; private fallbackProviders; private kv?; private cacheEnabled; private cacheTTL; private cacheKeyPrefix; private timeoutMs; /** The configured API keys in every form they can appear in a message. Removed from each provider message. */ private secrets; constructor(config: GeocodingConfig, kv?: GeocodingCache); /** * Geocode an address to coordinates. * * Returns `AddressNotFound` when every provider that answered found nothing * (a provider with no results passes to the next one). When no provider * answered at all, returns `ProviderRateLimited`, `ProviderUnreachable` or * `ProviderRejected`, each listing every attempt. Returns `GeocodingCancelled` * when the signal aborts. A cache fault is logged and treated as a miss. */ geocode(address: string, preferredProvider?: GeocodingProvider, options?: GeocodingOptions): Promise<import(\"@arki/failure\").Failure<\"geo.address_not_found\", { address: string; }> | import(\"@arki/failure\").Failure<\"geo.cancelled\", undefined> | import(\"@arki/failure\").Failure<\"geo.provider_rate_limited\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; retryAfterMs?: number | undefined; }> | import(\"@arki/failure\").Failure<\"geo.provider_rejected\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | import(\"@arki/failure\").Failure<\"geo.provider_unreachable\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | { latitude: number; longitude: number; formattedAddress: string; addressComponents: { streetAddress?: string | undefined; locality?: string | undefined; region?: string | undefined; postalCode?: string | undefined; country?: string | undefined; }; placeId?: string | undefined; provider: \"geocodio\" | \"google\" | \"here\" | \"locationiq\" | \"mapbox\" | \"nominatim\" | \"opencage\"; }>; /** * Reverse geocode coordinates to an address. * * Returns `InvalidCoordinates` for a latitude or longitude that is not * finite or out of range, and `NoAddressAtLocation` when every provider that * answered found no address there (a provider with no results passes to the * next one). Provider faults and cancellation are returned as for `geocode`. */ reverseGeocode(lat: number, lon: number, preferredProvider?: GeocodingProvider, options?: GeocodingOptions): Promise<import(\"@arki/failure\").Failure<\"geo.cancelled\", undefined> | import(\"@arki/failure\").Failure<\"geo.invalid_coordinates\", { reason: string; }> | import(\"@arki/failure\").Failure<\"geo.no_address_at_location\", { latitude: number; longitude: number; }> | import(\"@arki/failure\").Failure<\"geo.provider_rate_limited\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; retryAfterMs?: number | undefined; }> | import(\"@arki/failure\").Failure<\"geo.provider_rejected\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | import(\"@arki/failure\").Failure<\"geo.provider_unreachable\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | { latitude: number; longitude: number; formattedAddress: string; addressComponents: { streetAddress?: string | undefined; locality?: string | undefined; region?: string | undefined; postalCode?: string | undefined; country?: string | undefined; }; placeId?: string | undefined; provider: \"geocodio\" | \"google\" | \"here\" | \"locationiq\" | \"mapbox\" | \"nominatim\" | \"opencage\"; }>; /** * Batch geocode multiple addresses * Processes in parallel with rate limiting * * Each address maps to what `geocode` returned for it. An empty or blank * address is recorded as `AddressNotFound` without asking a provider, and * never stops the batch. Returns `GeocodingCancelled` if the signal aborts, * and starts no new lookups after that. `concurrency` must be a whole * number of at least 1; anything else is a bug in the caller and throws. */ batchGeocode(addresses: string[], concurrency?: number, options?: GeocodingOptions): Promise<import(\"@arki/failure\").Failure<\"geo.cancelled\", undefined> | Map<string, BatchGeocodeEntry>>; /** * Ask each provider in order until one answers with a result. * `isNoAddress` says whether a thrown error means \"found nothing\" instead of \"provider fault\". */ private lookup; /** Replaces every configured API key in `text` with `[redacted]`. */ private redactSecrets; /** * The failure for a lookup where no provider gave an answer. Rate limit wins * (it names when to retry), then unreachable (a retry may work), then refused. * No configured provider at all counts as unreachable with no attempts. */ private providerFailure; /** A stored answer, or undefined on a miss. A cache fault or a stored value of the wrong shape is a miss, never an error. */ private readCache; /** Store an answer. A cache fault is logged and the good answer is still returned. */ private writeCache; /** * Providers to try, in order: the preferred one (if any), then the primary, * then the fallbacks. Each provider appears once. */ private getProviderOrder; /** * Transform node-geocoder Entry to our GeocodeResult format. * An entry without usable coordinates is no result: it is never turned into (0, 0). */ private transformResult; /** * Hash address for cache key generation */ private hashAddress; }",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react",
+      "name": "AddressNotFound",
+      "kind": "variable",
+      "signature": "export declare const AddressNotFound: import(\"@arki/failure\").FailureDefinition<\"geo.address_not_found\", import(\"@standard-schema/spec\").StandardSchemaV1<{ address: string; }, { address: string; }>>;",
+      "jsdocSummary": "Every provider that answered found nothing for this address. Not cached, so a later lookup asks again."
+    },
+    {
+      "subpath": "./react",
+      "name": "bearingToDirection",
+      "kind": "function",
+      "signature": "export declare function bearingToDirection(bearing: number): Direction;",
+      "jsdocSummary": "Get compass direction from bearing"
+    },
+    {
+      "subpath": "./react",
+      "name": "Bounds",
+      "kind": "type",
+      "signature": "export type Bounds = { north: number; south: number; east: number; west: number; };",
+      "jsdocSummary": "Represents a geographic bounding box"
+    },
+    {
+      "subpath": "./react",
+      "name": "boundsContains",
+      "kind": "function",
+      "signature": "export declare function boundsContains(bounds1: Bounds, bounds2: Bounds): boolean;",
+      "jsdocSummary": "Check if bounds1 contains bounds2"
+    },
+    {
+      "subpath": "./react",
+      "name": "BoundsError",
+      "kind": "class",
+      "signature": "export declare class BoundsError extends GeoError { constructor(message: string, cause?: unknown); }",
+      "jsdocSummary": "Error thrown when bounds calculations fail"
+    },
+    {
+      "subpath": "./react",
+      "name": "boundsIntersect",
+      "kind": "function",
+      "signature": "export declare function boundsIntersect(bounds1: Bounds, bounds2: Bounds): boolean;",
+      "jsdocSummary": "Check if two bounds intersect"
+    },
+    {
+      "subpath": "./react",
+      "name": "calculateBearing",
+      "kind": "function",
+      "signature": "export declare function calculateBearing(point1: Coordinates, point2: Coordinates): number;",
+      "jsdocSummary": "Calculate the bearing (direction) from point1 to point2"
+    },
+    {
+      "subpath": "./react",
+      "name": "calculateDestination",
+      "kind": "function",
+      "signature": "export declare function calculateDestination(point: Coordinates, distance: number, bearing: number): Coordinates;",
+      "jsdocSummary": "Calculate destination point given distance and bearing from start point"
+    },
+    {
+      "subpath": "./react",
+      "name": "calculateDistance",
+      "kind": "function",
+      "signature": "export declare function calculateDistance(point1: Coordinates, point2: Coordinates, unit?: DistanceUnit): number;",
+      "jsdocSummary": "Calculate the great-circle distance between two points using the Haversine formula"
+    },
+    {
+      "subpath": "./react",
+      "name": "calculateMidpoint",
+      "kind": "function",
+      "signature": "export declare function calculateMidpoint(point1: Coordinates, point2: Coordinates): Coordinates;",
+      "jsdocSummary": "Calculate the midpoint between two coordinates"
+    },
+    {
+      "subpath": "./react",
+      "name": "CONVERSION_FACTORS",
+      "kind": "variable",
+      "signature": "export declare const CONVERSION_FACTORS: { readonly KM_TO_MI: 0.621371; readonly MI_TO_KM: 1.60934; readonly KM_TO_M: 1000; readonly M_TO_KM: 0.001; readonly MI_TO_FT: 5280; readonly FT_TO_MI: 0.000189394; };",
+      "jsdocSummary": "Conversion factors"
+    },
+    {
+      "subpath": "./react",
+      "name": "convertDistance",
+      "kind": "function",
+      "signature": "export declare function convertDistance(distance: number, fromUnit: DistanceUnit, toUnit: DistanceUnit): number;",
+      "jsdocSummary": "Convert distance between units"
+    },
+    {
+      "subpath": "./react",
+      "name": "Coordinates",
+      "kind": "type",
+      "signature": "export type Coordinates = { lat: number; lng: number; };",
+      "jsdocSummary": "Represents geographic coordinates using WGS84 datum"
+    },
+    {
+      "subpath": "./react",
+      "name": "coordinatesEqual",
+      "kind": "function",
+      "signature": "export declare function coordinatesEqual(coords1: Coordinates, coords2: Coordinates, epsilon?: number): boolean;",
+      "jsdocSummary": "Check if two coordinates are approximately equal"
+    },
+    {
+      "subpath": "./react",
+      "name": "coordinatesFromUrl",
+      "kind": "function",
+      "signature": "export declare function coordinatesFromUrl(urlParam: string): Coordinates | InvalidCoordinates;",
+      "jsdocSummary": "Parse coordinates from URL parameter"
+    },
+    {
+      "subpath": "./react",
+      "name": "coordinatesToUrl",
+      "kind": "function",
+      "signature": "export declare function coordinatesToUrl(coords: Coordinates): string;",
+      "jsdocSummary": "Convert coordinates to URL-safe string"
+    },
+    {
+      "subpath": "./react",
+      "name": "createBoundsFromCoordinates",
+      "kind": "function",
+      "signature": "export declare function createBoundsFromCoordinates(coordinates: Coordinates[]): Bounds;",
+      "jsdocSummary": "Create bounds from an array of coordinates"
+    },
+    {
+      "subpath": "./react",
+      "name": "createBoundsFromRadius",
+      "kind": "function",
+      "signature": "export declare function createBoundsFromRadius(center: Coordinates, radiusKm: number): Bounds;",
+      "jsdocSummary": "Create bounds from a center point and radius"
+    },
+    {
+      "subpath": "./react",
+      "name": "decimalToDMS",
+      "kind": "function",
+      "signature": "export declare function decimalToDMS(decimal: number): { degrees: number; minutes: number; seconds: number; direction: 'N' | 'S' | 'E' | 'W'; };",
+      "jsdocSummary": "Convert Decimal Degrees to Degrees, Minutes, Seconds"
+    },
+    {
+      "subpath": "./react",
+      "name": "Direction",
+      "kind": "type",
+      "signature": "export type Direction = 'N' | 'NNE' | 'NE' | 'ENE' | 'E' | 'ESE' | 'SE' | 'SSE' | 'S' | 'SSW' | 'SW' | 'WSW' | 'W' | 'WNW' | 'NW' | 'NNW';",
+      "jsdocSummary": "Cardinal and intercardinal directions"
+    },
+    {
+      "subpath": "./react",
+      "name": "DistanceUnit",
+      "kind": "type",
+      "signature": "export type DistanceUnit = 'km' | 'mi' | 'm' | 'ft';",
+      "jsdocSummary": "Distance units"
+    },
+    {
+      "subpath": "./react",
+      "name": "dmsToDecimal",
+      "kind": "function",
+      "signature": "export declare function dmsToDecimal(degrees: number, minutes: number, seconds: number, direction: 'N' | 'S' | 'E' | 'W'): number;",
+      "jsdocSummary": "Convert Degrees, Minutes, Seconds to Decimal Degrees"
+    },
+    {
+      "subpath": "./react",
+      "name": "EARTH_RADIUS_KM",
+      "kind": "variable",
+      "signature": "export declare const EARTH_RADIUS_KM = 6371;",
+      "jsdocSummary": "Earth radius in kilometers"
+    },
+    {
+      "subpath": "./react",
+      "name": "EARTH_RADIUS_MI",
+      "kind": "variable",
+      "signature": "export declare const EARTH_RADIUS_MI = 3959;",
+      "jsdocSummary": "Earth radius in miles"
+    },
+    {
+      "subpath": "./react",
+      "name": "extendBounds",
+      "kind": "function",
+      "signature": "export declare function extendBounds(bounds: Bounds, coord: Coordinates): Bounds;",
+      "jsdocSummary": "Extend bounds to include a coordinate"
+    },
+    {
+      "subpath": "./react",
+      "name": "formatBounds",
+      "kind": "function",
+      "signature": "export declare function formatBounds(bounds: Bounds, precision?: number): string;",
+      "jsdocSummary": "Format bounds as a string"
+    },
+    {
+      "subpath": "./react",
+      "name": "formatCoordinates",
+      "kind": "function",
+      "signature": "export declare function formatCoordinates(coords: Coordinates, precision?: number): string;",
+      "jsdocSummary": "Format coordinates as a human-readable string"
+    },
+    {
+      "subpath": "./react",
+      "name": "formatCoordinatesDMS",
+      "kind": "function",
+      "signature": "export declare function formatCoordinatesDMS(coords: Coordinates): string;",
+      "jsdocSummary": "Format coordinates in Degrees, Minutes, Seconds (DMS) format"
+    },
+    {
+      "subpath": "./react",
+      "name": "fromStandardCoordinates",
+      "kind": "function",
+      "signature": "export declare function fromStandardCoordinates(coords: Coordinates, format: 'latLng' | 'latitudeLongitude' | 'latLon'): { lat: number; lng: number; } | { latitude: number; longitude: number; } | { lat: number; lon: number; };",
+      "jsdocSummary": "Convert standard coordinates to alternative formats"
+    },
+    {
+      "subpath": "./react",
+      "name": "GeocodingCancelled",
+      "kind": "variable",
+      "signature": "export declare const GeocodingCancelled: import(\"@arki/failure\").FailureDefinition<\"geo.cancelled\", undefined>; ; export type GeocodingCancelled = ReturnType<typeof GeocodingCancelled>;",
+      "jsdocSummary": "The lookup was cancelled through its `AbortSignal`. This is not a provider fault."
+    },
+    {
+      "subpath": "./react",
+      "name": "GeoError",
+      "kind": "class",
+      "signature": "export declare class GeoError extends Error { readonly code: string; readonly cause?: unknown; constructor(message: string, code: string, cause?: unknown); }",
+      "jsdocSummary": "Base error class for all geo-related errors"
+    },
+    {
+      "subpath": "./react",
+      "name": "getBoundsCenter",
+      "kind": "function",
+      "signature": "export declare function getBoundsCenter(bounds: Bounds): Coordinates;",
+      "jsdocSummary": "Get the center coordinate of bounds"
+    },
+    {
+      "subpath": "./react",
+      "name": "getBoundsRadius",
+      "kind": "function",
+      "signature": "export declare function getBoundsRadius(bounds: Bounds): number;",
+      "jsdocSummary": "Get the approximate radius of bounds in kilometers Uses the distance from center to the furthest corner"
+    },
+    {
+      "subpath": "./react",
+      "name": "InvalidCoordinates",
+      "kind": "variable",
+      "signature": "export declare const InvalidCoordinates: import(\"@arki/failure\").FailureDefinition<\"geo.invalid_coordinates\", import(\"@standard-schema/spec\").StandardSchemaV1<{ reason: string; }, { reason: string; }>>; ; export type InvalidCoordinates = ReturnType<typeof InvalidCoordinates>;",
+      "jsdocSummary": "Coordinates, or text that should hold coordinates, are not a valid latitude and longitude. Nothing was looked up."
+    },
+    {
+      "subpath": "./react",
+      "name": "isCoordinateInBounds",
+      "kind": "function",
+      "signature": "export declare function isCoordinateInBounds(coord: Coordinates, bounds: Bounds): boolean;",
+      "jsdocSummary": "Check if a coordinate is within bounds"
+    },
+    {
+      "subpath": "./react",
+      "name": "isValidCoordinates",
+      "kind": "function",
+      "signature": "export declare function isValidCoordinates(coords: Coordinates): boolean;",
+      "jsdocSummary": "Check whether coordinates are finite and within range"
+    },
+    {
+      "subpath": "./react",
+      "name": "MapProviderError",
+      "kind": "class",
+      "signature": "export declare class MapProviderError extends GeoError { readonly provider: string; constructor(message: string, provider: string, cause?: unknown); }",
+      "jsdocSummary": "Error thrown when map provider initialization fails"
+    },
+    {
+      "subpath": "./react",
+      "name": "NoAddressAtLocation",
+      "kind": "variable",
+      "signature": "export declare const NoAddressAtLocation: import(\"@arki/failure\").FailureDefinition<\"geo.no_address_at_location\", import(\"@standard-schema/spec\").StandardSchemaV1<{ latitude: number; longitude: number; }, { latitude: number; longitude: number; }>>;",
+      "jsdocSummary": "Every provider that answered found no address at these coordinates, such as a point at sea. Not cached."
+    },
+    {
+      "subpath": "./react",
+      "name": "normalizeCoordinates",
+      "kind": "function",
+      "signature": "export declare function normalizeCoordinates(coords: Coordinates): Coordinates | InvalidCoordinates;",
+      "jsdocSummary": "Normalize coordinates to valid ranges"
+    },
+    {
+      "subpath": "./react",
+      "name": "normalizeLatitude",
+      "kind": "function",
+      "signature": "export declare function normalizeLatitude(lat: number): number | InvalidCoordinates;",
+      "jsdocSummary": "Normalize latitude to -90 to 90 range (clamped)"
+    },
+    {
+      "subpath": "./react",
+      "name": "normalizeLongitude",
+      "kind": "function",
+      "signature": "export declare function normalizeLongitude(lng: number): number | InvalidCoordinates;",
+      "jsdocSummary": "Normalize longitude to the -180 to 180 range by wrapping around the globe. Runs in constant time for any finite input."
+    },
+    {
+      "subpath": "./react",
+      "name": "padBounds",
+      "kind": "function",
+      "signature": "export declare function padBounds(bounds: Bounds, percent: number): Bounds;",
+      "jsdocSummary": "Pad bounds by a percentage"
+    },
+    {
+      "subpath": "./react",
+      "name": "parseCoordinates",
+      "kind": "function",
+      "signature": "export declare function parseCoordinates(str: string): Coordinates | InvalidCoordinates;",
+      "jsdocSummary": "Parse coordinates from a string Supports formats: - \"40.7128, -74.0060\" - \"40.7128,-74.0060\" - \"40.7128 -74.0060\""
+    },
+    {
+      "subpath": "./react",
+      "name": "ProviderAttempt",
+      "kind": "type",
+      "signature": "export type ProviderAttempt = z.infer<typeof providerAttemptSchema>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react",
+      "name": "providerAttemptSchema",
+      "kind": "variable",
+      "signature": "export declare const providerAttemptSchema: z.ZodObject<{ provider: z.ZodString; kind: z.ZodEnum<{ rate_limited: \"rate_limited\"; rejected: \"rejected\"; unreachable: \"unreachable\"; }>; message: z.ZodString; }, z.core.$strip>;",
+      "jsdocSummary": "One provider's failed try, kept so a failure that ends the lookup still shows every provider."
+    },
+    {
+      "subpath": "./react",
+      "name": "ProviderRateLimited",
+      "kind": "variable",
+      "signature": "export declare const ProviderRateLimited: import(\"@arki/failure\").FailureDefinition<\"geo.provider_rate_limited\", import(\"@standard-schema/spec\").StandardSchemaV1<{ provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; retryAfterMs?: number | undefined; }, { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; retryAfterMs?: number | undefined; }>>; ; export type ProviderRateLimited = ReturnType<typeof ProviderRateLimited>;",
+      "jsdocSummary": "No provider answered and at least one said it is over its limit. `retryAfterMs` is that provider's `Retry-After`, when it sent one."
+    },
+    {
+      "subpath": "./react",
+      "name": "ProviderRejected",
+      "kind": "variable",
+      "signature": "export declare const ProviderRejected: import(\"@arki/failure\").FailureDefinition<\"geo.provider_rejected\", import(\"@standard-schema/spec\").StandardSchemaV1<{ provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }, { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }>>; ; export type ProviderRejected = ReturnType<typeof ProviderRejected>;",
+      "jsdocSummary": "No provider answered and at least one refused the request: a bad or missing key, a denied account, or a malformed request. Retrying gives the same answer."
+    },
+    {
+      "subpath": "./react",
+      "name": "ProviderUnreachable",
+      "kind": "variable",
+      "signature": "export declare const ProviderUnreachable: import(\"@arki/failure\").FailureDefinition<\"geo.provider_unreachable\", import(\"@standard-schema/spec\").StandardSchemaV1<{ provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }, { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }>>; ; export type ProviderUnreachable = ReturnType<typeof ProviderUnreachable>;",
+      "jsdocSummary": "No provider answered: each was down, timed out, or sent an unreadable answer. A later retry may work."
+    },
+    {
+      "subpath": "./react",
+      "name": "roundCoordinates",
+      "kind": "function",
+      "signature": "export declare function roundCoordinates(coords: Coordinates, precision?: number): Coordinates;",
+      "jsdocSummary": "Round coordinates to specified precision"
+    },
+    {
+      "subpath": "./react",
+      "name": "toStandardCoordinates",
+      "kind": "function",
+      "signature": "export declare function toStandardCoordinates(coords: { lat?: number; lng?: number; lon?: number; latitude?: number; longitude?: number; }): Coordinates | InvalidCoordinates;",
+      "jsdocSummary": "Convert coordinates from one format to Google Maps format Handles various input formats: - {latitude, longitude} - {lat, lng} - {lat, lon}"
+    },
+    {
+      "subpath": "./react",
+      "name": "useBoundsFromCoordinates",
+      "kind": "function",
+      "signature": "export declare function useBoundsFromCoordinates(coordinates: Coordinates[]): UseBoundsReturn;",
+      "jsdocSummary": "Hook to calculate and work with bounds"
+    },
+    {
+      "subpath": "./react",
+      "name": "useBoundsFromRadius",
+      "kind": "function",
+      "signature": "export declare function useBoundsFromRadius(center: Coordinates | null, radiusKm: number): UseBoundsReturn;",
+      "jsdocSummary": "Hook to create bounds from a center point and radius"
+    },
+    {
+      "subpath": "./react",
+      "name": "UseBoundsReturn",
+      "kind": "type",
+      "signature": "export type UseBoundsReturn = { bounds: Bounds | null; center: Coordinates | null; radius: number | null; contains: (coord: Coordinates) => boolean; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react",
+      "name": "useCoordinates",
+      "kind": "function",
+      "signature": "export declare function useCoordinates(initialCoordinates?: Coordinates | null): UseCoordinatesReturn;",
+      "jsdocSummary": "Hook to manage coordinate state with validation. A refused change keeps the old coordinates and sets `error`."
+    },
+    {
+      "subpath": "./react",
+      "name": "UseCoordinatesReturn",
+      "kind": "type",
+      "signature": "export type UseCoordinatesReturn = { coordinates: Coordinates | null; setCoordinates: (coords: Coordinates) => void; updateLatitude: (lat: number) => void; updateLongitude: (lng: number) => void; isValid: boolean; /** Why the last change was refused, or null when the last change was accepted. The previous value is kept. */ error: InvalidCoordinates | null; normalize: () => void; clear: () => void; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react",
+      "name": "useDistance",
+      "kind": "function",
+      "signature": "export declare function useDistance(point1: Coordinates | null, point2: Coordinates | null, unit?: DistanceUnit): number | null;",
+      "jsdocSummary": "Hook to calculate distance between two coordinates"
+    },
+    {
+      "subpath": "./react",
+      "name": "validateCoordinates",
+      "kind": "function",
+      "signature": "export declare function validateCoordinates(coords: Coordinates): Coordinates | InvalidCoordinates;",
+      "jsdocSummary": "Validate coordinates"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "AdvancedMarkerProps",
+      "kind": "type",
+      "signature": "type AdvancedMarkerProps = PropsWithChildren<Omit<google.maps.marker.AdvancedMarkerElementOptions, 'gmpDraggable' | 'gmpClickable' | 'content' | 'map' | 'collisionBehavior'> & AdvancedMarkerEventProps & { draggable?: boolean; clickable?: boolean; collisionBehavior?: CollisionBehavior; /** * @deprecated Use `anchorLeft` and `anchorTop` instead. * * The anchor point for the Advanced Marker. * Either use one of the predefined anchor point from the \"AdvancedMarkerAnchorPoint\" export * or provide a string tuple in the form of [\"xPosition\", \"yPosition\"]. * The position is measured from the top-left corner and * can be anything that can be consumed by a CSS translate() function. * For example in percent (\"50%\") or in pixels (\"20px\"). */ anchorPoint?: AdvancedMarkerAnchorPoint | [string, string]; /** * A CSS length-percentage value which is used to offset the anchor point of the marker from the top left corner of the marker. This is useful when using a visual which has an anchor point that is different than the typical bottom center point of the default marker. The default value is \"-%50\". */ anchorLeft?: string; /** * A CSS length-percentage value which is used to offset the anchor point of the marker from the top left corner of the marker. This is useful when using a visual which has an anchor point that is different than the typical bottom center point of the default marker. The default value is \"-%100\". */ anchorTop?: string; /** * A className for the content element. * (can only be used with HTML Marker content) */ className?: string; /** * Additional styles to apply to the content element. */ style?: CSSProperties; }>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "AdvancedMarkerRef",
+      "kind": "type",
+      "signature": "type AdvancedMarkerRef = google.maps.marker.AdvancedMarkerElement | null;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "APIProviderContextValue",
+      "kind": "interface",
+      "signature": "interface APIProviderContextValue { status: APILoadingStatus; loadedLibraries: LoadedLibraries; importLibrary: typeof importLibrary; mapInstances: Record<string, google.maps.Map>; addMapInstance: (map: google.maps.Map, id?: string) => void; removeMapInstance: (id?: string) => void; clearMapInstances: () => void; map3dInstances: Record<string, google.maps.maps3d.Map3DElement>; addMap3DInstance: (map3d: google.maps.maps3d.Map3DElement, id?: string) => void; removeMap3DInstance: (id?: string) => void; clearMap3DInstances: () => void; internalUsageAttributionIds: string[] | null; }",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "APIProviderProps",
+      "kind": "type",
+      "signature": "type APIProviderProps = PropsWithChildren<{ /** * apiKey must be provided to load the Google Maps JavaScript API. To create an API key, see: https://developers.google.com/maps/documentation/javascript/get-api-key * Part of: */ apiKey: string; /** * A custom id to reference the script tag can be provided. The default is set to 'google-maps-api' * @default 'google-maps-api' */ libraries?: Array<string>; /** * A specific version of the Google Maps JavaScript API can be used. * Read more about versioning: https://developers.google.com/maps/documentation/javascript/versions * Part of: https://developers.google.com/maps/documentation/javascript/url-params */ version?: string; /** * Sets the map to a specific region. * Read more about localizing the Map: https://developers.google.com/maps/documentation/javascript/localization * Part of: https://developers.google.com/maps/documentation/javascript/url-params */ region?: string; /** * Use a specific language for the map. * Read more about localizing the Map: https://developers.google.com/maps/documentation/javascript/localization * Part of: https://developers.google.com/maps/documentation/javascript/url-params */ language?: string; /** * auth_referrer_policy can be set to 'origin'. * Part of: https://developers.google.com/maps/documentation/javascript/url-params */ authReferrerPolicy?: string; /** * To track usage of Google Maps JavaScript API via numeric channels. * The only acceptable channel values are numbers from 0-999. * Read more in the * [documentation](https://developers.google.com/maps/reporting-and-monitoring/reporting#usage-tracking-per-channel) */ channel?: number; /** * To understand usage and ways to improve our solutions, Google includes the * `solution_channel` query parameter in API calls to gather information about * code usage. You may opt out at any time by setting this attribute to an * empty string. Read more in the * [documentation](https://developers.google.com/maps/reporting-and-monitoring/reporting#solutions-usage). */ solutionChannel?: string; /** * To help Google understand which libraries and samples are helpful to developers, such as usage of this library. * To opt out of sending the usage attribution ID, use this boolean prop. Read more in the * [documentation](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions.internalUsageAttributionIds). */ disableUsageAttribution?: boolean; /** * A function that can be used to execute code after the Google Maps JavaScript API has been loaded. */ onLoad?: () => void; /** * A function that will be called if there was an error when loading the Google Maps JavaScript API. */ onError?: (error: unknown) => void; /** * A function that returns a Promise resolving to an App Check token. * When provided, it will be set on `google.maps.Settings.getInstance().fetchAppCheckToken` * after the Google Maps JavaScript API has been loaded. */ fetchAppCheckToken?: () => Promise<google.maps.MapsAppCheckTokenResult>; }>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "Bounds",
+      "kind": "type",
+      "signature": "export type Bounds = { north: number; south: number; east: number; west: number; };",
+      "jsdocSummary": "Represents a geographic bounding box"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "CameraChangeDetails",
+      "kind": "type",
+      "signature": "export type CameraChangeDetails = { /** * New center coordinates */ center: Coordinates; /** * New zoom level */ zoom: number; /** * New heading (0-360 degrees) */ heading: number; /** * New tilt (0-90 degrees) */ tilt: number; };",
+      "jsdocSummary": "Camera change details"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "COLOR_SETS",
+      "kind": "variable",
+      "signature": "export declare const COLOR_SETS: { /** * Default marker colors (8-color palette) */ readonly markers: readonly [\"#FF6B6B\", \"#4ECDC4\", \"#45B7D1\", \"#FFA07A\", \"#98D8C8\", \"#F7DC6F\", \"#BB8FCE\", \"#85C1E2\"]; /** * Status colors */ readonly status: { readonly success: '#10B981'; readonly warning: '#F59E0B'; readonly error: '#EF4444'; readonly info: '#3B82F6'; }; /** * Polyline colors (for connections) */ readonly polylines: { readonly guess: '#4ECDC4'; readonly actual: '#FF6B6B'; readonly connection: '#FFA07A'; }; };",
+      "jsdocSummary": "Predefined color sets for different use cases"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "CoordinateEvent",
+      "kind": "type",
+      "signature": "export type CoordinateEvent = { /** * Clicked coordinates */ coords: Coordinates; /** * Original event */ domEvent: MouseEvent; };",
+      "jsdocSummary": "Custom coordinate event (simplified from MapMouseEvent)"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "Coordinates",
+      "kind": "type",
+      "signature": "export type Coordinates = { lat: number; lng: number; };",
+      "jsdocSummary": "Represents geographic coordinates using WGS84 datum"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "createDashedPolylineConfig",
+      "kind": "function",
+      "signature": "export declare function createDashedPolylineConfig(color?: string): google.maps.PolylineOptions;",
+      "jsdocSummary": "Create dashed polyline configuration"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "createMapConfig",
+      "kind": "function",
+      "signature": "export declare function createMapConfig(overrides?: Partial<GoogleMapProps>): Partial<GoogleMapProps>;",
+      "jsdocSummary": "Create custom map configuration"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "createMarchingAntsAnimation",
+      "kind": "function",
+      "signature": "export declare function createMarchingAntsAnimation(polyline: google.maps.Polyline, interval?: number): () => void;",
+      "jsdocSummary": "Create marching ants animation for a polyline"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "createPolylinePath",
+      "kind": "function",
+      "signature": "export declare function createPolylinePath(start: Coordinates, end: Coordinates): google.maps.LatLng[];",
+      "jsdocSummary": "Create polyline path from two points"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "createSolidPolylineConfig",
+      "kind": "function",
+      "signature": "export declare function createSolidPolylineConfig(color?: string, weight?: number): google.maps.PolylineOptions;",
+      "jsdocSummary": "Create solid polyline configuration"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "DEFAULT_BOUNDS_PADDING",
+      "kind": "variable",
+      "signature": "export declare const DEFAULT_BOUNDS_PADDING = 40;",
+      "jsdocSummary": "Default bounds padding in pixels"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "DEFAULT_MAP_CENTER",
+      "kind": "variable",
+      "signature": "export declare const DEFAULT_MAP_CENTER: Coordinates;",
+      "jsdocSummary": "Default map center (middle of the world)"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "DEFAULT_MAP_CONFIG",
+      "kind": "variable",
+      "signature": "export declare const DEFAULT_MAP_CONFIG: Partial<GoogleMapProps>;",
+      "jsdocSummary": "Default map configuration for common use cases"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "DEFAULT_MAP_ID",
+      "kind": "variable",
+      "signature": "export declare const DEFAULT_MAP_ID = \"arki-map\";",
+      "jsdocSummary": "Default map ID for standard maps"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "DEFAULT_MAP_ZOOM",
+      "kind": "variable",
+      "signature": "export declare const DEFAULT_MAP_ZOOM = 2;",
+      "jsdocSummary": "Default map zoom level"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "Direction",
+      "kind": "type",
+      "signature": "export type Direction = 'N' | 'NNE' | 'NE' | 'ENE' | 'E' | 'ESE' | 'SE' | 'SSE' | 'S' | 'SSW' | 'SW' | 'WSW' | 'W' | 'WNW' | 'NW' | 'NNW';",
+      "jsdocSummary": "Cardinal and intercardinal directions"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "DistanceUnit",
+      "kind": "type",
+      "signature": "export type DistanceUnit = 'km' | 'mi' | 'm' | 'ft';",
+      "jsdocSummary": "Distance units"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "formatCoordinates",
+      "kind": "function",
+      "signature": "export declare function formatCoordinates(coords: Coordinates, precision?: number): string;",
+      "jsdocSummary": "Format coordinates to a readable string"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "formatCoordinatesWithCardinals",
+      "kind": "function",
+      "signature": "export declare function formatCoordinatesWithCardinals(coords: Coordinates, precision?: number): string;",
+      "jsdocSummary": "Format coordinates with cardinal directions"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "formatZoomLevel",
+      "kind": "function",
+      "signature": "export declare function formatZoomLevel(zoom: number): string;",
+      "jsdocSummary": "Format zoom level to descriptive text"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "getAllMarkerColors",
+      "kind": "function",
+      "signature": "export declare function getAllMarkerColors(): readonly string[];",
+      "jsdocSummary": "Get all marker colors"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "getMarkerColor",
+      "kind": "function",
+      "signature": "export declare function getMarkerColor(index: number): string;",
+      "jsdocSummary": "Get a color from the marker palette by index"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GoogleInfoWindow",
+      "kind": "function",
+      "signature": "export declare function GoogleInfoWindow({ position, onClose, children, pixelOffset, maxWidth, className, headerContent, shouldFocus, }: GoogleInfoWindowProps): import(\"react\").JSX.Element;",
+      "jsdocSummary": "GoogleInfoWindow component"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GoogleInfoWindowProps",
+      "kind": "type",
+      "signature": "export type GoogleInfoWindowProps = { /** * Info window position (where it should appear) */ position: Coordinates; /** * Called when the close button is clicked */ onClose?: () => void; /** * Info window content */ children: ReactNode; /** * Pixel offset from the position */ pixelOffset?: [number, number]; /** * Maximum width in pixels */ maxWidth?: number; /** * Additional className for styling */ className?: string; /** * Custom header text */ headerContent?: ReactNode; /** * Whether to show close button * @default true */ shouldFocus?: boolean; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GoogleMap",
+      "kind": "function",
+      "signature": "export declare function GoogleMap({ center, zoom, mapId, mapTypeId, gestureHandling, disableDefaultUI, clickableIcons, onClick, onCameraChanged, children, className, style, }: GoogleMapProps): import(\"react\").JSX.Element;",
+      "jsdocSummary": "GoogleMap component"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GoogleMapInstance",
+      "kind": "type",
+      "signature": "export type GoogleMapInstance = google.maps.Map;",
+      "jsdocSummary": "Type for the Google Map instance"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GoogleMapProps",
+      "kind": "type",
+      "signature": "export type GoogleMapProps = { /** * Map center coordinates * @default { lat: 20, lng: 0 } */ center?: Coordinates; /** * Map zoom level (0-21) * @default 2 */ zoom?: number; /** * Map ID for styling * @default 'arki-map' */ mapId?: string; /** * Map type * @default 'roadmap' */ mapTypeId?: 'roadmap' | 'satellite' | 'hybrid' | 'terrain'; /** * Gesture handling mode * @default 'greedy' */ gestureHandling?: 'greedy' | 'cooperative' | 'none'; /** * Whether to disable default UI controls * @default true */ disableDefaultUI?: boolean; /** * Whether to disable clickable POI icons * @default true */ clickableIcons?: boolean; /** * Called when user clicks the map */ onClick?: (coords: Coordinates, event: MapMouseEvent) => void; /** * Called when the camera (center/zoom) changes */ onCameraChanged?: (event: MapCameraChangedEvent) => void; /** * Child elements (markers, info windows, etc.) */ children?: ReactNode; /** * Additional className for styling */ className?: string; /** * Map container style */ style?: React.CSSProperties; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GoogleMapsLibrary",
+      "kind": "type",
+      "signature": "export type GoogleMapsLibrary = google.maps.MapsLibrary;",
+      "jsdocSummary": "Type for the Google Maps library"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GoogleMapsProvider",
+      "kind": "function",
+      "signature": "export declare function GoogleMapsProvider({ apiKey, children, version, libraries, onLoadError, language, region, }: GoogleMapsProviderProps): import(\"react\").JSX.Element;",
+      "jsdocSummary": "GoogleMapsProvider component"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GoogleMapsProviderProps",
+      "kind": "type",
+      "signature": "export type GoogleMapsProviderProps = { /** * Google Maps API key (required) */ apiKey: string; /** * Child components (maps, markers, etc.) */ children: ReactNode; /** * Google Maps API version * @default 'weekly' */ version?: string; /** * Additional Google Maps libraries to load * @default ['places', 'geometry'] */ libraries?: string[]; /** * Called when the API fails to load */ onLoadError?: (error: Error) => void; /** * Language for map text * @default 'en' */ language?: string; /** * Region bias for results */ region?: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GoogleMapTypeId",
+      "kind": "type",
+      "signature": "export type GoogleMapTypeId = 'roadmap' | 'satellite' | 'hybrid' | 'terrain';",
+      "jsdocSummary": "Map type IDs"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GoogleMarker",
+      "kind": "function",
+      "signature": "export declare function GoogleMarker({ position, onClick, children, zIndex, className, title }: GoogleMarkerProps): import(\"react\").JSX.Element;",
+      "jsdocSummary": "GoogleMarker component"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GoogleMarkerProps",
+      "kind": "type",
+      "signature": "export type GoogleMarkerProps = { /** * Marker position coordinates */ position: Coordinates; /** * Called when marker is clicked */ onClick?: () => void; /** * Marker content (e.g., Pin, custom HTML) */ children?: ReactNode; /** * z-index for stacking order */ zIndex?: number; /** * Additional className for styling */ className?: string; /** * Title shown on hover */ title?: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GooglePin",
+      "kind": "function",
+      "signature": "export declare function GooglePin({ background, borderColor, glyphColor, scale, }: GooglePinProps): import(\"react\").JSX.Element;",
+      "jsdocSummary": "GooglePin component"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "GooglePinProps",
+      "kind": "type",
+      "signature": "export type GooglePinProps = { /** * Pin background color */ background?: string; /** * Pin border color */ borderColor?: string; /** * Pin glyph color (icon/text inside) */ glyphColor?: string; /** * Pin scale (size multiplier) * @default 1 */ scale?: number; };",
+      "jsdocSummary": "GooglePin - Wrapper for Pin component"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "HIGHLIGHTED_BOUNDS_PADDING",
+      "kind": "variable",
+      "signature": "export declare const HIGHLIGHTED_BOUNDS_PADDING = 100;",
+      "jsdocSummary": "Highlighted bounds padding (more zoom for detail)"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "InfoWindowProps",
+      "kind": "type",
+      "signature": "type InfoWindowProps = Omit<google.maps.InfoWindowOptions, 'headerContent' | 'content' | 'pixelOffset'> & { style?: CSSProperties; className?: string; anchor?: google.maps.Marker | google.maps.marker.AdvancedMarkerElement | null; pixelOffset?: [number, number]; shouldFocus?: boolean; onClose?: () => void; onCloseClick?: () => void; headerContent?: ReactNode; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "LOCATION_PICKER_CONFIG",
+      "kind": "variable",
+      "signature": "export declare const LOCATION_PICKER_CONFIG: Partial<GoogleMapProps>;",
+      "jsdocSummary": "Map configuration for location selection"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "LocationPicker",
+      "kind": "function",
+      "signature": "export declare function LocationPicker({ onLocationSelect, selectedLocation, actualLocation, showActual, disabled, className, centerOnSelected, zoom: externalZoom, center: externalCenter, onZoomChange, onCenterChange, selectedMarkerColor, // Blue actualMarkerColor, // Green enableStreetView, }: LocationPickerProps): import(\"react\").JSX.Element;",
+      "jsdocSummary": "LocationPicker component"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "LocationPickerProps",
+      "kind": "type",
+      "signature": "export type LocationPickerProps = { /** * Called when user selects a location by clicking the map */ onLocationSelect: (coords: Coordinates) => void; /** * Currently selected location (controlled) */ selectedLocation: Coordinates | null; /** * Optional actual/correct location to display */ actualLocation?: Coordinates; /** * Whether to show the actual location marker * @default false */ showActual?: boolean; /** * Whether the map is disabled (no clicking) * @default false */ disabled?: boolean; /** * Additional className for the container */ className?: string; /** * Whether to automatically center on selected location * @default false */ centerOnSelected?: boolean; /** * Map zoom level (controlled) */ zoom?: number; /** * Map center (controlled) */ center?: Coordinates; /** * Called when zoom changes */ onZoomChange?: (zoom: number) => void; /** * Called when center changes */ onCenterChange?: (center: Coordinates) => void; /** * Color for selected location marker * @default '#3b82f6' (blue) */ selectedMarkerColor?: string; /** * Color for actual location marker * @default '#22c55e' (green) */ actualMarkerColor?: string; /** * Whether to enable Street View checking * @default false */ enableStreetView?: boolean; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "MapCameraChangedEvent",
+      "kind": "type",
+      "signature": "type MapCameraChangedEvent = MapEvent<{ center: google.maps.LatLngLiteral; bounds: google.maps.LatLngBoundsLiteral; zoom: number; heading: number; tilt: number; }>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "MapCameraProps",
+      "kind": "type",
+      "signature": "type MapCameraProps = { center: google.maps.LatLngLiteral; zoom: number; heading?: number; tilt?: number; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "MapEvent",
+      "kind": "type",
+      "signature": "type MapEvent<T = unknown> = { type: string; map: google.maps.Map; detail: T; stoppable: boolean; stop: () => void; domEvent?: MouseEvent | TouchEvent | PointerEvent | KeyboardEvent | Event; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "MapMouseEvent",
+      "kind": "type",
+      "signature": "type MapMouseEvent = MapEvent<{ latLng: google.maps.LatLngLiteral | null; placeId: string | null; }>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "MapProps",
+      "kind": "type",
+      "signature": "type MapProps = PropsWithChildren<Omit<google.maps.MapOptions, 'renderingType' | 'colorScheme'> & MapEventProps & DeckGlCompatProps & { /** * An id for the map, this is required when multiple maps are present * in the same APIProvider context. */ id?: string; /** * Additional style rules to apply to the map dom-element. */ style?: CSSProperties; /** * Additional css class-name to apply to the element containing the map. */ className?: string; /** * The color-scheme to use for the map. */ colorScheme?: ColorScheme; /** * The rendering-type to be used. */ renderingType?: RenderingType; /** * Indicates that the map will be controlled externally. Disables all controls provided by the map itself. */ controlled?: boolean; /** * Enable caching of map-instances created by this component. */ reuseMaps?: boolean; defaultCenter?: google.maps.LatLngLiteral; defaultZoom?: number; defaultHeading?: number; defaultTilt?: number; /** * Alternative way to specify the default camera props as a geographic region that should be fully visible */ defaultBounds?: google.maps.LatLngBoundsLiteral & { padding?: number | google.maps.Padding; }; }>;",
+      "jsdocSummary": "Props for the Map Component"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "MapSize",
+      "kind": "type",
+      "signature": "export type MapSize = { width: number; height: number; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "MARKER_COLORS",
+      "kind": "variable",
+      "signature": "export declare const MARKER_COLORS: readonly ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2'];",
+      "jsdocSummary": "Default marker colors (8-color palette for rounds/items)"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "MarkerInfo",
+      "kind": "type",
+      "signature": "export type MarkerInfo<T = unknown> = { /** * Unique identifier */ id: string; /** * Marker position */ position: Coordinates; /** * Optional label/title */ label?: string; /** * Optional color */ color?: string; /** * Optional image URL */ imageUrl?: string; /** * Additional metadata */ metadata?: T; };",
+      "jsdocSummary": "Marker with metadata (for ResultsMap, etc.)"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "MarkerProps",
+      "kind": "type",
+      "signature": "type MarkerProps = Omit<google.maps.MarkerOptions, 'map'> & MarkerEventProps;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "parseCoordinates",
+      "kind": "function",
+      "signature": "export declare function parseCoordinates(coordString: string): Coordinates | null;",
+      "jsdocSummary": "Parse coordinates from string"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "PinProps",
+      "kind": "type",
+      "signature": "type PinProps = PropsWithChildren<google.maps.marker.PinElementOptions>;",
+      "jsdocSummary": "Props for the Pin component"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "POLYLINE_ANIMATION_INTERVAL",
+      "kind": "variable",
+      "signature": "export declare const POLYLINE_ANIMATION_INTERVAL = 50;",
+      "jsdocSummary": "Default polyline animation interval (ms)"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "POLYLINE_DASH_LENGTH",
+      "kind": "variable",
+      "signature": "export declare const POLYLINE_DASH_LENGTH = 10;",
+      "jsdocSummary": "Default polyline dash length"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "POLYLINE_GAP_LENGTH",
+      "kind": "variable",
+      "signature": "export declare const POLYLINE_GAP_LENGTH = 10;",
+      "jsdocSummary": "Default polyline gap length"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "PolylineData",
+      "kind": "type",
+      "signature": "export type PolylineData = { /** * Start coordinate */ start: Coordinates; /** * End coordinate */ end: Coordinates; /** * Optional custom color */ color?: string; /** * Optional color index (if using palette) */ colorIndex?: number; /** * Optional opacity (0-1) * @default 1.0 */ opacity?: number; /** * Optional stroke weight (line thickness) * @default 2 */ strokeWeight?: number; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "RESULTS_MAP_CONFIG",
+      "kind": "variable",
+      "signature": "export declare const RESULTS_MAP_CONFIG: Partial<GoogleMapProps>;",
+      "jsdocSummary": "Map configuration for result visualization"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "STATIC_MAP_CONFIG",
+      "kind": "variable",
+      "signature": "export declare const STATIC_MAP_CONFIG: Partial<GoogleMapProps>;",
+      "jsdocSummary": "Map configuration for disabled interaction"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "StreetViewChecker",
+      "kind": "function",
+      "signature": "export declare function StreetViewChecker({ location, onAvailabilityChange, radius }: StreetViewCheckerProps): null;",
+      "jsdocSummary": "StreetViewChecker component"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "StreetViewCheckerProps",
+      "kind": "type",
+      "signature": "export type StreetViewCheckerProps = { /** * Location to check for Street View availability */ location: Coordinates; /** * Called when availability is determined */ onAvailabilityChange: (available: boolean) => void; /** * Search radius in meters * @default 50 */ radius?: number; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "StreetViewPanorama",
+      "kind": "function",
+      "signature": "export declare function StreetViewPanorama({ location, pov, zoom, containerId: customContainerId, className, }: StreetViewPanoramaProps): import(\"react\").JSX.Element;",
+      "jsdocSummary": "StreetViewPanorama component"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "StreetViewPanoramaProps",
+      "kind": "type",
+      "signature": "export type StreetViewPanoramaProps = { /** * Location to display Street View */ location: Coordinates; /** * Point of view configuration */ pov?: { heading: number; pitch: number; }; /** * Initial zoom level * @default 1 */ zoom?: number; /** * Custom container ID (auto-generated if not provided) */ containerId?: string; /** * Container className */ className?: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "useApiIsLoaded",
+      "kind": "function",
+      "signature": "export declare function useApiIsLoaded(): boolean;",
+      "jsdocSummary": "Hook to check if the Google Maps API is loaded"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "useGoogleMap",
+      "kind": "function",
+      "signature": "export declare function useGoogleMap(): google.maps.Map | null;",
+      "jsdocSummary": "Hook to access the current Google Map instance"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "useGoogleMaps",
+      "kind": "function",
+      "signature": "export declare function useGoogleMaps(): google.maps.MapsLibrary | null;",
+      "jsdocSummary": "Hook to access the Google Maps JavaScript API library"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "useMapBounds",
+      "kind": "function",
+      "signature": "export declare function useMapBounds(options?: UseMapBoundsOptions): { fitToMarkers: (coordinates: Coordinates[], customPadding?: number) => void; fitToHighlighted: (coordinates: Coordinates[]) => void; calculateBounds: (coordinates: Coordinates[]) => google.maps.LatLngBounds | null; };",
+      "jsdocSummary": "Hook to manage map bounds"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "UseMapBoundsOptions",
+      "kind": "type",
+      "signature": "export type UseMapBoundsOptions = { /** * Padding around bounds in pixels * @default 40 */ padding?: number; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "useMapOverlay",
+      "kind": "function",
+      "signature": "export declare function useMapOverlay(options?: UseMapOverlayOptions): UseMapOverlayReturn;",
+      "jsdocSummary": "Hook to manage map overlay state"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "UseMapOverlayOptions",
+      "kind": "type",
+      "signature": "export type UseMapOverlayOptions = { /** * Initial map width in pixels * @default 700 */ initialWidth?: number; /** * Initial map height in pixels * @default 500 */ initialHeight?: number; /** * Minimum map width in pixels * @default 400 */ minWidth?: number; /** * Minimum map height in pixels * @default 300 */ minHeight?: number; /** * Delay before collapsing the map after mouse leave (ms) * @default 150 */ collapseDelay?: number; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "UseMapOverlayReturn",
+      "kind": "type",
+      "signature": "export type UseMapOverlayReturn = { /** * Whether the map is currently expanded (on hover or pinned) */ isMapExpanded: boolean; /** * Whether the map is pinned (stays expanded) */ isMapPinned: boolean; /** * Whether the map is in fullscreen mode */ isMapFullScreen: boolean; /** * Current map size */ mapSize: MapSize; /** * Whether the map is currently being resized */ isResizing: boolean; /** * Set fullscreen state */ setIsMapFullScreen: (isFullScreen: boolean) => void; /** * Called when mouse enters the map area */ handleMapMouseEnter: () => void; /** * Called when mouse leaves the map area */ handleMapMouseLeave: () => void; /** * Toggle map pin state */ handleToggleMapPin: () => void; /** * Toggle fullscreen mode */ handleToggleFullScreen: () => void; /** * Start resizing the map */ handleResizeStart: (e: React.MouseEvent, handle: string) => void; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "usePolylineAnimation",
+      "kind": "function",
+      "signature": "export declare function usePolylineAnimation(polylines: PolylineData[], options?: UsePolylineAnimationOptions): { clearPolylines: () => void; };",
+      "jsdocSummary": "Hook to manage animated polylines on a map"
+    },
+    {
+      "subpath": "./react/google-maps",
+      "name": "UsePolylineAnimationOptions",
+      "kind": "type",
+      "signature": "export type UsePolylineAnimationOptions = { /** * Animation interval in milliseconds * @default 50 */ interval?: number; /** * Whether animations are enabled * @default true */ enabled?: boolean; };",
+      "jsdocSummary": ""
+    }
+  ],
+  "groups": [],
+  "errorCodes": [
+    "geo.address_not_found",
+    "geo.cancelled",
+    "geo.invalid_coordinates",
+    "geo.no_address_at_location",
+    "geo.provider_rate_limited",
+    "geo.provider_rejected",
+    "geo.provider_unreachable"
+  ]
+}

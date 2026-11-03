@@ -1,0 +1,65 @@
+[
+  {
+    "code": "geo.address_not_found",
+    "package": "@arki/geo",
+    "kind": "failure",
+    "what": "Every provider that answered found nothing for this address. Not cached, so a later lookup asks again.",
+    "fix": "Check the address for typos, or add detail such as the city and country.",
+    "verify": "bun run test -- src/geocoding/service.test.ts",
+    "source": "src/core/failures.ts:13"
+  },
+  {
+    "code": "geo.cancelled",
+    "package": "@arki/geo",
+    "kind": "failure",
+    "what": "The lookup was cancelled through its `AbortSignal`. This is not a provider fault.",
+    "fix": "Do not retry unless the caller still wants the result. Pass a fresh signal if it does.",
+    "verify": "bun run test -- src/geocoding/service.test.ts",
+    "source": "src/core/failures.ts:46"
+  },
+  {
+    "code": "geo.invalid_coordinates",
+    "package": "@arki/geo",
+    "kind": "failure",
+    "what": "Coordinates, or text that should hold coordinates, are not a valid latitude and longitude. Nothing was looked up.",
+    "fix": "Send finite numbers: latitude from -90 to 90, longitude from -180 to 180. Text must read \"lat, lng\".",
+    "verify": "bun run test -- src/core/coordinates.test.ts",
+    "source": "src/core/failures.ts:35"
+  },
+  {
+    "code": "geo.no_address_at_location",
+    "package": "@arki/geo",
+    "kind": "failure",
+    "what": "Every provider that answered found no address at these coordinates, such as a point at sea. Not cached.",
+    "fix": "Check the coordinates are latitude then longitude, or treat the place as having no address.",
+    "verify": "bun run test -- src/geocoding/service.test.ts",
+    "source": "src/core/failures.ts:24"
+  },
+  {
+    "code": "geo.provider_rate_limited",
+    "package": "@arki/geo",
+    "kind": "failure",
+    "what": "No provider answered and at least one said it is over its limit. `retryAfterMs` is that provider's `Retry-After`, when it sent one.",
+    "fix": "Wait `retryAfterMs` (or back off) and retry, or add a provider to the fallback list.",
+    "verify": "bun run test -- src/geocoding/service.test.ts",
+    "source": "src/core/failures.ts:70"
+  },
+  {
+    "code": "geo.provider_rejected",
+    "package": "@arki/geo",
+    "kind": "failure",
+    "what": "No provider answered and at least one refused the request: a bad or missing key, a denied account, or a malformed request. Retrying gives the same answer.",
+    "fix": "Check the provider's API key and plan in the configuration, then retry.",
+    "verify": "bun run test -- src/geocoding/service.test.ts",
+    "source": "src/core/failures.ts:81"
+  },
+  {
+    "code": "geo.provider_unreachable",
+    "package": "@arki/geo",
+    "kind": "failure",
+    "what": "No provider answered: each was down, timed out, or sent an unreadable answer. A later retry may work.",
+    "fix": "Retry later, or add a fallback provider.",
+    "verify": "bun run test -- src/geocoding/service.test.ts",
+    "source": "src/core/failures.ts:92"
+  }
+]
