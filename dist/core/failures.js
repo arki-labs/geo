@@ -4,6 +4,7 @@
  */
 import { z } from 'zod';
 import { defineFailure } from '@arki/failure';
+import { providerAttemptSchema } from './schemas.js';
 /** Every provider that answered found nothing for this address. Not cached, so a later lookup asks again.
  * @fix Check the address for typos, or add detail such as the city and country.
  * @verify bun run test -- src/geocoding/service.test.ts
@@ -42,12 +43,6 @@ export const GeocodingCancelled = defineFailure('geo.cancelled', {
     status: 499,
     message: 'The geocoding lookup was cancelled by the caller.',
     remediation: 'Do not retry unless the caller still wants the result. Pass a fresh signal if it does.',
-});
-/** One provider's failed try, kept so a failure that ends the lookup still shows every provider. */
-export const providerAttemptSchema = z.object({
-    provider: z.string(),
-    kind: z.enum(['rate_limited', 'rejected', 'unreachable']),
-    message: z.string(),
 });
 const providerFailureData = z.object({
     /** The provider whose failure is reported here. */

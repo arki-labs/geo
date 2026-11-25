@@ -1,4 +1,5 @@
 import { InvalidCoordinates } from './failures.js';
+import { assertPrecision } from './precision.js';
 /**
  * Check whether coordinates are finite and within range
  * @param coords - Coordinates to validate
@@ -79,10 +80,12 @@ export function normalizeCoordinates(coords) {
 /**
  * Format coordinates as a human-readable string
  * @param coords - Coordinates to format
- * @param precision - Number of decimal places (default: 6)
+ * @param precision - Number of decimal places (default: 6): a finite number from 0 to 100. Anything
+ *   else (negative, over 100, `NaN`, an infinity) throws the invariant failure `ARKI_FAILURE_E008`, a caller bug.
  * @returns Formatted string like "40.7128, -74.0060"
  */
 export function formatCoordinates(coords, precision = 6) {
+    assertPrecision('formatCoordinates', precision);
     return `${coords.lat.toFixed(precision)}, ${coords.lng.toFixed(precision)}`;
 }
 /**
@@ -143,10 +146,13 @@ export function coordinatesEqual(coords1, coords2, epsilon = 0.000_001) {
 /**
  * Round coordinates to specified precision
  * @param coords - Coordinates to round
- * @param precision - Number of decimal places (default: 6)
+ * @param precision - Number of decimal places (default: 6): a finite number from 0 to 100. Anything
+ *   else throws the invariant failure `ARKI_FAILURE_E008`, a caller bug (over about 308 places the
+ *   factor overflowed and every coordinate came back `NaN`).
  * @returns Rounded coordinates
  */
 export function roundCoordinates(coords, precision = 6) {
+    assertPrecision('roundCoordinates', precision);
     const factor = 10 ** precision;
     return {
         lat: Math.round(coords.lat * factor) / factor,

@@ -1,6 +1,6 @@
 {
   "package": "@arki/geo",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "entries": [
     {
       "subpath": ".",
@@ -307,15 +307,8 @@
       "subpath": ".",
       "name": "ProviderAttempt",
       "kind": "type",
-      "signature": "export type ProviderAttempt = z.infer<typeof providerAttemptSchema>;",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": ".",
-      "name": "providerAttemptSchema",
-      "kind": "variable",
-      "signature": "export declare const providerAttemptSchema: z.ZodObject<{ provider: z.ZodString; kind: z.ZodEnum<{ rate_limited: \"rate_limited\"; rejected: \"rejected\"; unreachable: \"unreachable\"; }>; message: z.ZodString; }, z.core.$strip>;",
-      "jsdocSummary": "One provider's failed try, kept so a failure that ends the lookup still shows every provider."
+      "signature": "export type ProviderAttempt = { provider: string; kind: 'rate_limited' | 'rejected' | 'unreachable'; message: string; };",
+      "jsdocSummary": "One provider's failed try, kept so a failure that ends the lookup still shows every provider. `providerAttemptSchema` (`@arki/geo/zod`) checks it."
     },
     {
       "subpath": ".",
@@ -363,14 +356,7 @@
       "subpath": "./geocoding",
       "name": "AddressComponents",
       "kind": "type",
-      "signature": "export type AddressComponents = z.infer<typeof addressComponentsSchema>;",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./geocoding",
-      "name": "addressComponentsSchema",
-      "kind": "variable",
-      "signature": "export declare const addressComponentsSchema: z.ZodObject<{ streetAddress: z.ZodOptional<z.ZodString>; locality: z.ZodOptional<z.ZodString>; region: z.ZodOptional<z.ZodString>; postalCode: z.ZodOptional<z.ZodString>; country: z.ZodOptional<z.ZodString>; }, z.core.$strip>;",
+      "signature": "export type AddressComponents = { streetAddress?: string | undefined; locality?: string | undefined; region?: string | undefined; postalCode?: string | undefined; country?: string | undefined; };",
       "jsdocSummary": "Address components following Schema.org PostalAddress structure. `locality` is the city, `region` the state or province, `country` an ISO 3166-1 alpha-2 code."
     },
     {
@@ -398,15 +384,8 @@
       "subpath": "./geocoding",
       "name": "GeocodeResult",
       "kind": "type",
-      "signature": "export type GeocodeResult = z.infer<typeof geocodeResultSchema>;",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./geocoding",
-      "name": "geocodeResultSchema",
-      "kind": "variable",
-      "signature": "export declare const geocodeResultSchema: z.ZodObject<{ latitude: z.ZodNumber; longitude: z.ZodNumber; formattedAddress: z.ZodString; addressComponents: z.ZodObject<{ streetAddress: z.ZodOptional<z.ZodString>; locality: z.ZodOptional<z.ZodString>; region: z.ZodOptional<z.ZodString>; postalCode: z.ZodOptional<z.ZodString>; country: z.ZodOptional<z.ZodString>; }, z.core.$strip>; placeId: z.ZodOptional<z.ZodString>; provider: z.ZodEnum<{ geocodio: \"geocodio\"; google: \"google\"; here: \"here\"; locationiq: \"locationiq\"; mapbox: \"mapbox\"; nominatim: \"nominatim\"; opencage: \"opencage\"; }>; }, z.core.$strip>;",
-      "jsdocSummary": "Result from geocoding operation. Also the shape read back from the cache."
+      "signature": "export type GeocodeResult = { latitude: number; longitude: number; formattedAddress: string; addressComponents: AddressComponents; placeId?: string | undefined; provider: GeocodingProvider; };",
+      "jsdocSummary": "Result from geocoding operation. Also the shape read back from the cache. `latitude` is in [-90, 90], `longitude` in [-180, 180]. `geocodeResultSchema` (`@arki/geo/zod`) checks it."
     },
     {
       "subpath": "./geocoding",
@@ -461,7 +440,7 @@
       "subpath": "./geocoding",
       "name": "GeocodingService",
       "kind": "class",
-      "signature": "export declare class GeocodingService { private providerOptions; private primaryProvider; private fallbackProviders; private kv?; private cacheEnabled; private cacheTTL; private cacheKeyPrefix; private timeoutMs; /** The configured API keys in every form they can appear in a message. Removed from each provider message. */ private secrets; constructor(config: GeocodingConfig, kv?: GeocodingCache); /** * Geocode an address to coordinates. * * Returns `AddressNotFound` when every provider that answered found nothing * (a provider with no results passes to the next one). When no provider * answered at all, returns `ProviderRateLimited`, `ProviderUnreachable` or * `ProviderRejected`, each listing every attempt. Returns `GeocodingCancelled` * when the signal aborts. A cache fault is logged and treated as a miss. */ geocode(address: string, preferredProvider?: GeocodingProvider, options?: GeocodingOptions): Promise<import(\"@arki/failure\").Failure<\"geo.address_not_found\", { address: string; }> | import(\"@arki/failure\").Failure<\"geo.cancelled\", undefined> | import(\"@arki/failure\").Failure<\"geo.provider_rate_limited\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; retryAfterMs?: number | undefined; }> | import(\"@arki/failure\").Failure<\"geo.provider_rejected\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | import(\"@arki/failure\").Failure<\"geo.provider_unreachable\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | { latitude: number; longitude: number; formattedAddress: string; addressComponents: { streetAddress?: string | undefined; locality?: string | undefined; region?: string | undefined; postalCode?: string | undefined; country?: string | undefined; }; placeId?: string | undefined; provider: \"geocodio\" | \"google\" | \"here\" | \"locationiq\" | \"mapbox\" | \"nominatim\" | \"opencage\"; }>; /** * Reverse geocode coordinates to an address. * * Returns `InvalidCoordinates` for a latitude or longitude that is not * finite or out of range, and `NoAddressAtLocation` when every provider that * answered found no address there (a provider with no results passes to the * next one). Provider faults and cancellation are returned as for `geocode`. */ reverseGeocode(lat: number, lon: number, preferredProvider?: GeocodingProvider, options?: GeocodingOptions): Promise<import(\"@arki/failure\").Failure<\"geo.cancelled\", undefined> | import(\"@arki/failure\").Failure<\"geo.invalid_coordinates\", { reason: string; }> | import(\"@arki/failure\").Failure<\"geo.no_address_at_location\", { latitude: number; longitude: number; }> | import(\"@arki/failure\").Failure<\"geo.provider_rate_limited\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; retryAfterMs?: number | undefined; }> | import(\"@arki/failure\").Failure<\"geo.provider_rejected\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | import(\"@arki/failure\").Failure<\"geo.provider_unreachable\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | { latitude: number; longitude: number; formattedAddress: string; addressComponents: { streetAddress?: string | undefined; locality?: string | undefined; region?: string | undefined; postalCode?: string | undefined; country?: string | undefined; }; placeId?: string | undefined; provider: \"geocodio\" | \"google\" | \"here\" | \"locationiq\" | \"mapbox\" | \"nominatim\" | \"opencage\"; }>; /** * Batch geocode multiple addresses * Processes in parallel with rate limiting * * Each address maps to what `geocode` returned for it. An empty or blank * address is recorded as `AddressNotFound` without asking a provider, and * never stops the batch. Returns `GeocodingCancelled` if the signal aborts, * and starts no new lookups after that. `concurrency` must be a whole * number of at least 1; anything else is a bug in the caller and throws. */ batchGeocode(addresses: string[], concurrency?: number, options?: GeocodingOptions): Promise<import(\"@arki/failure\").Failure<\"geo.cancelled\", undefined> | Map<string, BatchGeocodeEntry>>; /** * Ask each provider in order until one answers with a result. * `isNoAddress` says whether a thrown error means \"found nothing\" instead of \"provider fault\". */ private lookup; /** Replaces every configured API key in `text` with `[redacted]`. */ private redactSecrets; /** * The failure for a lookup where no provider gave an answer. Rate limit wins * (it names when to retry), then unreachable (a retry may work), then refused. * No configured provider at all counts as unreachable with no attempts. */ private providerFailure; /** A stored answer, or undefined on a miss. A cache fault or a stored value of the wrong shape is a miss, never an error. */ private readCache; /** Store an answer. A cache fault is logged and the good answer is still returned. */ private writeCache; /** * Providers to try, in order: the preferred one (if any), then the primary, * then the fallbacks. Each provider appears once. */ private getProviderOrder; /** * Transform node-geocoder Entry to our GeocodeResult format. * An entry without usable coordinates is no result: it is never turned into (0, 0). */ private transformResult; /** * Hash address for cache key generation */ private hashAddress; }",
+      "signature": "export declare class GeocodingService { private providerOptions; private primaryProvider; private fallbackProviders; private kv?; private cacheEnabled; private cacheTTL; private cacheKeyPrefix; private timeoutMs; /** The configured API keys in every form they can appear in a message. Removed from each provider message. */ private secrets; constructor(config: GeocodingConfig, kv?: GeocodingCache); /** * Geocode an address to coordinates. * * Returns `AddressNotFound` when every provider that answered found nothing * (a provider with no results passes to the next one). When no provider * answered at all, returns `ProviderRateLimited`, `ProviderUnreachable` or * `ProviderRejected`, each listing every attempt. Returns `GeocodingCancelled` * when the signal aborts. A cache fault is logged and treated as a miss. */ geocode(address: string, preferredProvider?: GeocodingProvider, options?: GeocodingOptions): Promise<import(\"@arki/failure\").Failure<\"geo.address_not_found\", { address: string; }> | import(\"@arki/failure\").Failure<\"geo.cancelled\", undefined> | import(\"@arki/failure\").Failure<\"geo.provider_rate_limited\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; retryAfterMs?: number | undefined; }> | import(\"@arki/failure\").Failure<\"geo.provider_rejected\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | import(\"@arki/failure\").Failure<\"geo.provider_unreachable\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | GeocodeResult>; /** * Reverse geocode coordinates to an address. * * Returns `InvalidCoordinates` for a latitude or longitude that is not * finite or out of range, and `NoAddressAtLocation` when every provider that * answered found no address there (a provider with no results passes to the * next one). Provider faults and cancellation are returned as for `geocode`. */ reverseGeocode(lat: number, lon: number, preferredProvider?: GeocodingProvider, options?: GeocodingOptions): Promise<import(\"@arki/failure\").Failure<\"geo.cancelled\", undefined> | import(\"@arki/failure\").Failure<\"geo.invalid_coordinates\", { reason: string; }> | import(\"@arki/failure\").Failure<\"geo.no_address_at_location\", { latitude: number; longitude: number; }> | import(\"@arki/failure\").Failure<\"geo.provider_rate_limited\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; retryAfterMs?: number | undefined; }> | import(\"@arki/failure\").Failure<\"geo.provider_rejected\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | import(\"@arki/failure\").Failure<\"geo.provider_unreachable\", { provider: string; attempts: { provider: string; kind: \"rate_limited\" | \"rejected\" | \"unreachable\"; message: string; }[]; }> | GeocodeResult>; /** * Batch geocode multiple addresses * Processes in parallel with rate limiting * * Each address maps to what `geocode` returned for it. An empty or blank * address is recorded as `AddressNotFound` without asking a provider, and * never stops the batch. Returns `GeocodingCancelled` if the signal aborts, * and starts no new lookups after that. `concurrency` must be a whole * number of at least 1; anything else is a bug in the caller and throws. */ batchGeocode(addresses: string[], concurrency?: number, options?: GeocodingOptions): Promise<import(\"@arki/failure\").Failure<\"geo.cancelled\", undefined> | Map<string, BatchGeocodeEntry>>; /** `batchGeocode` after its checks, inside its span: each address is its own `geo.geocode` span under it. */ private runBatch; /** * Ask each provider in order until one answers with a result. * `isNoAddress` says whether a thrown error means \"found nothing\" instead of \"provider fault\". */ private lookup; /** Replaces every configured API key in `text` with `[redacted]`. */ private redactSecrets; /** * The failure for a lookup where no provider gave an answer. Rate limit wins * (it names when to retry), then unreachable (a retry may work), then refused. * No configured provider at all counts as unreachable with no attempts. */ private providerFailure; /** Notes on the lookup span whether the cache answered: `hit`, `miss`, or `off` when there is no cache. */ private noteCache; /** A stored answer, or undefined on a miss. A cache fault or a stored value of the wrong shape is a miss, never an error. */ private readCache; /** Store an answer. A cache fault is logged and the good answer is still returned. */ private writeCache; /** * Providers to try, in order: the preferred one (if any), then the primary, * then the fallbacks. Each provider appears once. */ private getProviderOrder; /** * Transform node-geocoder Entry to our GeocodeResult format. * An entry without usable coordinates is no result: it is never turned into (0, 0). */ private transformResult; /** * Hash address for cache key generation */ private hashAddress; }",
       "jsdocSummary": ""
     },
     {
@@ -769,15 +748,8 @@
       "subpath": "./react",
       "name": "ProviderAttempt",
       "kind": "type",
-      "signature": "export type ProviderAttempt = z.infer<typeof providerAttemptSchema>;",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./react",
-      "name": "providerAttemptSchema",
-      "kind": "variable",
-      "signature": "export declare const providerAttemptSchema: z.ZodObject<{ provider: z.ZodString; kind: z.ZodEnum<{ rate_limited: \"rate_limited\"; rejected: \"rejected\"; unreachable: \"unreachable\"; }>; message: z.ZodString; }, z.core.$strip>;",
-      "jsdocSummary": "One provider's failed try, kept so a failure that ends the lookup still shows every provider."
+      "signature": "export type ProviderAttempt = { provider: string; kind: 'rate_limited' | 'rejected' | 'unreachable'; message: string; };",
+      "jsdocSummary": "One provider's failed try, kept so a failure that ends the lookup still shows every provider. `providerAttemptSchema` (`@arki/geo/zod`) checks it."
     },
     {
       "subpath": "./react",
@@ -1043,7 +1015,7 @@
       "name": "getMarkerColor",
       "kind": "function",
       "signature": "export declare function getMarkerColor(index: number): string;",
-      "jsdocSummary": "Get a color from the marker palette by index"
+      "jsdocSummary": "Get a color from the marker palette by index; indexes past the end wrap around."
     },
     {
       "subpath": "./react/google-maps",
@@ -1238,8 +1210,8 @@
       "subpath": "./react/google-maps",
       "name": "parseCoordinates",
       "kind": "function",
-      "signature": "export declare function parseCoordinates(coordString: string): Coordinates | null;",
-      "jsdocSummary": "Parse coordinates from string"
+      "signature": "export declare function parseCoordinates(str: string): Coordinates | InvalidCoordinates;",
+      "jsdocSummary": "Parse coordinates from a string Supports formats: - \"40.7128, -74.0060\" - \"40.7128,-74.0060\" - \"40.7128 -74.0060\""
     },
     {
       "subpath": "./react/google-maps",
@@ -1273,7 +1245,7 @@
       "subpath": "./react/google-maps",
       "name": "PolylineData",
       "kind": "type",
-      "signature": "export type PolylineData = { /** * Start coordinate */ start: Coordinates; /** * End coordinate */ end: Coordinates; /** * Optional custom color */ color?: string; /** * Optional color index (if using palette) */ colorIndex?: number; /** * Optional opacity (0-1) * @default 1.0 */ opacity?: number; /** * Optional stroke weight (line thickness) * @default 2 */ strokeWeight?: number; };",
+      "signature": "export type PolylineData = { /** * Start coordinate */ start: Coordinates; /** * End coordinate */ end: Coordinates; /** * Optional custom color */ color?: string; /** * Optional color index (if using palette): a whole number of at least 0 (see `getMarkerColor`); * anything else throws the invariant failure `ARKI_FAILURE_E008` when the polylines are drawn. */ colorIndex?: number; /** * Optional opacity (0-1) * @default 1.0 */ opacity?: number; /** * Optional stroke weight (line thickness) * @default 2 */ strokeWeight?: number; };",
       "jsdocSummary": ""
     },
     {
@@ -1387,6 +1359,27 @@
       "kind": "type",
       "signature": "export type UsePolylineAnimationOptions = { /** * Animation interval in milliseconds * @default 50 */ interval?: number; /** * Whether animations are enabled * @default true */ enabled?: boolean; };",
       "jsdocSummary": ""
+    },
+    {
+      "subpath": "./zod",
+      "name": "addressComponentsSchema",
+      "kind": "variable",
+      "signature": "export declare const addressComponentsSchema: z.ZodObject<{ streetAddress: z.ZodOptional<z.ZodString>; locality: z.ZodOptional<z.ZodString>; region: z.ZodOptional<z.ZodString>; postalCode: z.ZodOptional<z.ZodString>; country: z.ZodOptional<z.ZodString>; }, z.core.$strip>;",
+      "jsdocSummary": "An `AddressComponents`."
+    },
+    {
+      "subpath": "./zod",
+      "name": "geocodeResultSchema",
+      "kind": "variable",
+      "signature": "export declare const geocodeResultSchema: z.ZodObject<{ latitude: z.ZodNumber; longitude: z.ZodNumber; formattedAddress: z.ZodString; addressComponents: z.ZodObject<{ streetAddress: z.ZodOptional<z.ZodString>; locality: z.ZodOptional<z.ZodString>; region: z.ZodOptional<z.ZodString>; postalCode: z.ZodOptional<z.ZodString>; country: z.ZodOptional<z.ZodString>; }, z.core.$strip>; placeId: z.ZodOptional<z.ZodString>; provider: z.ZodEnum<{ geocodio: \"geocodio\"; google: \"google\"; here: \"here\"; locationiq: \"locationiq\"; mapbox: \"mapbox\"; nominatim: \"nominatim\"; opencage: \"opencage\"; }>; }, z.core.$strip>;",
+      "jsdocSummary": "A `GeocodeResult`, also the shape read back from the cache."
+    },
+    {
+      "subpath": "./zod",
+      "name": "providerAttemptSchema",
+      "kind": "variable",
+      "signature": "export declare const providerAttemptSchema: z.ZodObject<{ provider: z.ZodString; kind: z.ZodEnum<{ rate_limited: \"rate_limited\"; rejected: \"rejected\"; unreachable: \"unreachable\"; }>; message: z.ZodString; }, z.core.$strip>;",
+      "jsdocSummary": "A `ProviderAttempt`: one provider's failed try."
     }
   ],
   "groups": [],

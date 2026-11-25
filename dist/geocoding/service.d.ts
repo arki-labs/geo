@@ -13,8 +13,8 @@
  * "provider unreachable" or "cancelled".
  */
 import type { KV } from '@arki/kv';
+import type { GeocodeResult, GeocodingConfig, GeocodingProvider } from './types.js';
 import { GeocodingCancelled } from '../core/failures.js';
-import type { GeocodingConfig, GeocodingProvider } from './types.js';
 /** The slice of `KV` the service needs. Any store with `get` and `set` fits. */
 export type GeocodingCache = Pick<KV, 'get' | 'set'>;
 /**
@@ -76,20 +76,7 @@ export declare class GeocodingService {
             kind: "rate_limited" | "rejected" | "unreachable";
             message: string;
         }[];
-    }> | {
-        latitude: number;
-        longitude: number;
-        formattedAddress: string;
-        addressComponents: {
-            streetAddress?: string | undefined;
-            locality?: string | undefined;
-            region?: string | undefined;
-            postalCode?: string | undefined;
-            country?: string | undefined;
-        };
-        placeId?: string | undefined;
-        provider: "geocodio" | "google" | "here" | "locationiq" | "mapbox" | "nominatim" | "opencage";
-    }>;
+    }> | GeocodeResult>;
     /**
      * Reverse geocode coordinates to an address.
      *
@@ -125,20 +112,7 @@ export declare class GeocodingService {
             kind: "rate_limited" | "rejected" | "unreachable";
             message: string;
         }[];
-    }> | {
-        latitude: number;
-        longitude: number;
-        formattedAddress: string;
-        addressComponents: {
-            streetAddress?: string | undefined;
-            locality?: string | undefined;
-            region?: string | undefined;
-            postalCode?: string | undefined;
-            country?: string | undefined;
-        };
-        placeId?: string | undefined;
-        provider: "geocodio" | "google" | "here" | "locationiq" | "mapbox" | "nominatim" | "opencage";
-    }>;
+    }> | GeocodeResult>;
     /**
      * Batch geocode multiple addresses
      * Processes in parallel with rate limiting
@@ -150,6 +124,8 @@ export declare class GeocodingService {
      * number of at least 1; anything else is a bug in the caller and throws.
      */
     batchGeocode(addresses: string[], concurrency?: number, options?: GeocodingOptions): Promise<import("@arki/failure").Failure<"geo.cancelled", undefined> | Map<string, BatchGeocodeEntry>>;
+    /** `batchGeocode` after its checks, inside its span: each address is its own `geo.geocode` span under it. */
+    private runBatch;
     /**
      * Ask each provider in order until one answers with a result.
      * `isNoAddress` says whether a thrown error means "found nothing" instead of "provider fault".
@@ -163,6 +139,8 @@ export declare class GeocodingService {
      * No configured provider at all counts as unreachable with no attempts.
      */
     private providerFailure;
+    /** Notes on the lookup span whether the cache answered: `hit`, `miss`, or `off` when there is no cache. */
+    private noteCache;
     /** A stored answer, or undefined on a miss. A cache fault or a stored value of the wrong shape is a miss, never an error. */
     private readCache;
     /** Store an answer. A cache fault is logged and the good answer is still returned. */

@@ -2,7 +2,10 @@
  * Color utilities for map markers and elements
  */
 /**
- * Get a color from the marker palette by index
+ * Get a color from the marker palette by index; indexes past the end wrap around.
+ *
+ * @param index - A whole number of at least 0. Anything else (negative, a fraction, `NaN`) throws the
+ *   invariant failure `ARKI_FAILURE_E008`, a caller bug (it returned `undefined`).
  */
 export declare function getMarkerColor(index: number): string;
 /**

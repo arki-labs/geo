@@ -1,11 +1,16 @@
 /**
  * Color utilities for map markers and elements
  */
+import { invariant } from '@arki/failure';
 import { MARKER_COLORS } from '../constants.js';
 /**
- * Get a color from the marker palette by index
+ * Get a color from the marker palette by index; indexes past the end wrap around.
+ *
+ * @param index - A whole number of at least 0. Anything else (negative, a fraction, `NaN`) throws the
+ *   invariant failure `ARKI_FAILURE_E008`, a caller bug (it returned `undefined`).
  */
 export function getMarkerColor(index) {
+    invariant(Number.isSafeInteger(index) && index >= 0, () => `getMarkerColor: index must be a whole number of at least 0, got ${index}.`);
     return MARKER_COLORS[index % MARKER_COLORS.length];
 }
 /**

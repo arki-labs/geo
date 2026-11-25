@@ -5,6 +5,9 @@ import type { Coordinates } from '../types/index.js';
 /**
  * Format coordinates to a readable string
  *
+ * `precision` (default 4) is a finite number from 0 to 100; anything else throws the invariant
+ * failure `ARKI_FAILURE_E008`, a caller bug.
+ *
  * @example
  * formatCoordinates({ lat: 37.7749, lng: -122.4194 })
  * // Returns: "37.7749, -122.4194"
@@ -12,6 +15,9 @@ import type { Coordinates } from '../types/index.js';
 export declare function formatCoordinates(coords: Coordinates, precision?: number): string;
 /**
  * Format coordinates with cardinal directions
+ *
+ * `precision` (default 4) is a finite number from 0 to 100; anything else throws the invariant
+ * failure `ARKI_FAILURE_E008`, a caller bug.
  *
  * @example
  * formatCoordinatesWithCardinals({ lat: 37.7749, lng: -122.4194 })
@@ -22,11 +28,4 @@ export declare function formatCoordinatesWithCardinals(coords: Coordinates, prec
  * Format zoom level to descriptive text
  */
 export declare function formatZoomLevel(zoom: number): string;
-/**
- * Parse coordinates from string
- *
- * @example
- * parseCoordinates("37.7749, -122.4194")
- * // Returns: { lat: 37.7749, lng: -122.4194 }
- */
-export declare function parseCoordinates(coordString: string): Coordinates | null;
+export { parseCoordinates } from '../../../core/coordinates.js';

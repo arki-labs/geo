@@ -64,7 +64,8 @@ export declare function padBounds(bounds: Bounds, percent: number): Bounds;
 /**
  * Format bounds as a string
  * @param bounds - Bounds to format
- * @param precision - Number of decimal places (default: 6)
+ * @param precision - Number of decimal places (default: 6): a finite number from 0 to 100. Anything
+ *   else throws the invariant failure `ARKI_FAILURE_E008`, a caller bug.
  * @returns Formatted string like "N:40.7128 S:40.7000 E:-74.0000 W:-74.0060"
  */
 export declare function formatBounds(bounds: Bounds, precision?: number): string;

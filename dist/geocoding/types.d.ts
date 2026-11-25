@@ -1,7 +1,6 @@
 /**
  * Type definitions for the geocoding service
  */
-import { z } from 'zod';
 /** Every supported provider, written once. The type, the env enum and the cache schema all read it. */
 export declare const GEOCODING_PROVIDERS: readonly ['google', 'mapbox', 'nominatim', 'locationiq', 'here', 'opencage', 'geocodio'];
 /**
@@ -12,40 +11,25 @@ export type GeocodingProvider = (typeof GEOCODING_PROVIDERS)[number];
  * Address components following Schema.org PostalAddress structure.
  * `locality` is the city, `region` the state or province, `country` an ISO 3166-1 alpha-2 code.
  */
-export declare const addressComponentsSchema: z.ZodObject<{
-    streetAddress: z.ZodOptional<z.ZodString>;
-    locality: z.ZodOptional<z.ZodString>;
-    region: z.ZodOptional<z.ZodString>;
-    postalCode: z.ZodOptional<z.ZodString>;
-    country: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
-export type AddressComponents = z.infer<typeof addressComponentsSchema>;
+export type AddressComponents = {
+    streetAddress?: string | undefined;
+    locality?: string | undefined;
+    region?: string | undefined;
+    postalCode?: string | undefined;
+    country?: string | undefined;
+};
 /**
- * Result from geocoding operation. Also the shape read back from the cache.
+ * Result from geocoding operation. Also the shape read back from the cache. `latitude` is in [-90, 90],
+ * `longitude` in [-180, 180]. `geocodeResultSchema` (`@arki/geo/zod`) checks it.
  */
-export declare const geocodeResultSchema: z.ZodObject<{
-    latitude: z.ZodNumber;
-    longitude: z.ZodNumber;
-    formattedAddress: z.ZodString;
-    addressComponents: z.ZodObject<{
-        streetAddress: z.ZodOptional<z.ZodString>;
-        locality: z.ZodOptional<z.ZodString>;
-        region: z.ZodOptional<z.ZodString>;
-        postalCode: z.ZodOptional<z.ZodString>;
-        country: z.ZodOptional<z.ZodString>;
-    }, z.core.$strip>;
-    placeId: z.ZodOptional<z.ZodString>;
-    provider: z.ZodEnum<{
-        geocodio: "geocodio";
-        google: "google";
-        here: "here";
-        locationiq: "locationiq";
-        mapbox: "mapbox";
-        nominatim: "nominatim";
-        opencage: "opencage";
-    }>;
-}, z.core.$strip>;
-export type GeocodeResult = z.infer<typeof geocodeResultSchema>;
+export type GeocodeResult = {
+    latitude: number;
+    longitude: number;
+    formattedAddress: string;
+    addressComponents: AddressComponents;
+    placeId?: string | undefined;
+    provider: GeocodingProvider;
+};
 /**
  * Configuration for geocoding service
  */

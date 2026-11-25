@@ -1,3 +1,4 @@
+import { invariant } from '@arki/failure';
 import { CONVERSION_FACTORS, EARTH_RADIUS_KM } from './types.js';
 /**
  * Converts degrees to radians
@@ -10,6 +11,14 @@ function toRadians(degrees) {
  */
 function toDegrees(radians) {
     return (radians * 180) / Math.PI;
+}
+/** Wraps a longitude a little past ±180 (at most one turn) back into [-180, 180]. */
+function wrapLongitude(lng) {
+    if (lng > 180)
+        return lng - 360;
+    if (lng < -180)
+        return lng + 360;
+    return lng;
 }
 /**
  * Calculate the great-circle distance between two points using the Haversine formula
@@ -70,10 +79,12 @@ export function calculateBearing(point1, point2) {
 }
 /**
  * Get compass direction from bearing
- * @param bearing - Bearing in degrees (0-360)
+ * @param bearing - Bearing in degrees (0-360; any finite number is wrapped into that range). `NaN` or an
+ *   infinity throws the invariant failure `ARKI_FAILURE_E008`, a caller bug (it returned `undefined`).
  * @returns Cardinal or intercardinal direction
  */
 export function bearingToDirection(bearing) {
+    invariant(Number.isFinite(bearing), () => `bearingToDirection: bearing must be a finite number, got ${bearing}.`);
     const normalized = ((bearing % 360) + 360) % 360;
     const index = Math.round(normalized / 22.5) % 16;
     const directions = [
@@ -100,7 +111,7 @@ export function bearingToDirection(bearing) {
  * Calculate the midpoint between two coordinates
  * @param point1 - First coordinate
  * @param point2 - Second coordinate
- * @returns Midpoint coordinates
+ * @returns Midpoint coordinates; longitude is always within [-180, 180]
  */
 export function calculateMidpoint(point1, point2) {
     const lat1Rad = toRadians(point1.lat);
@@ -113,7 +124,7 @@ export function calculateMidpoint(point1, point2) {
     const lng3Rad = lng1Rad + Math.atan2(by, Math.cos(lat1Rad) + bx);
     return {
         lat: toDegrees(lat3Rad),
-        lng: toDegrees(lng3Rad),
+        lng: wrapLongitude(toDegrees(lng3Rad)),
     };
 }
 /**
@@ -121,7 +132,7 @@ export function calculateMidpoint(point1, point2) {
  * @param point - Starting coordinate
  * @param distance - Distance in kilometers
  * @param bearing - Bearing in degrees (0-360)
- * @returns Destination coordinates
+ * @returns Destination coordinates; longitude is always within [-180, 180]
  */
 export function calculateDestination(point, distance, bearing) {
     const angularDistance = distance / EARTH_RADIUS_KM;
@@ -134,7 +145,7 @@ export function calculateDestination(point, distance, bearing) {
         Math.atan2(Math.sin(bearingRad) * Math.sin(angularDistance) * Math.cos(lat1Rad), Math.cos(angularDistance) - Math.sin(lat1Rad) * Math.sin(lat2Rad));
     return {
         lat: toDegrees(lat2Rad),
-        lng: toDegrees(lng2Rad),
+        lng: wrapLongitude(toDegrees(lng2Rad)),
     };
 }
 /**

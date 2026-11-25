@@ -16,7 +16,8 @@ export declare function calculateDistance(point1: Coordinates, point2: Coordinat
 export declare function calculateBearing(point1: Coordinates, point2: Coordinates): number;
 /**
  * Get compass direction from bearing
- * @param bearing - Bearing in degrees (0-360)
+ * @param bearing - Bearing in degrees (0-360; any finite number is wrapped into that range). `NaN` or an
+ *   infinity throws the invariant failure `ARKI_FAILURE_E008`, a caller bug (it returned `undefined`).
  * @returns Cardinal or intercardinal direction
  */
 export declare function bearingToDirection(bearing: number): Direction;
@@ -24,7 +25,7 @@ export declare function bearingToDirection(bearing: number): Direction;
  * Calculate the midpoint between two coordinates
  * @param point1 - First coordinate
  * @param point2 - Second coordinate
- * @returns Midpoint coordinates
+ * @returns Midpoint coordinates; longitude is always within [-180, 180]
  */
 export declare function calculateMidpoint(point1: Coordinates, point2: Coordinates): Coordinates;
 /**
@@ -32,7 +33,7 @@ export declare function calculateMidpoint(point1: Coordinates, point2: Coordinat
  * @param point - Starting coordinate
  * @param distance - Distance in kilometers
  * @param bearing - Bearing in degrees (0-360)
- * @returns Destination coordinates
+ * @returns Destination coordinates; longitude is always within [-180, 180]
  */
 export declare function calculateDestination(point: Coordinates, distance: number, bearing: number): Coordinates;
 /**

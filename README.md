@@ -1,4 +1,4 @@
-Read-only mirror of `@arki/geo` v0.2.0. Source and issues: arki-labs/arki. Docs: https://arki.dev/packages/geo. Published 2026-11-03 with provenance https://www.npmjs.com/package/@arki/geo/v/0.2.0#provenance.
+Read-only mirror of `@arki/geo` v0.3.0. Source and issues: arki-labs/arki. Docs: https://arki.dev/packages/geo. Published 2026-11-25 with provenance https://www.npmjs.com/package/@arki/geo/v/0.3.0#provenance.
 
 # @arki/geo
 
@@ -14,12 +14,13 @@ bun add @arki/geo
 Peers are optional. Install `react` and `react-dom` for `@arki/geo/react`. Install
 `@vis.gl/react-google-maps` for `@arki/geo/react/google-maps`.
 
-| Entry                         | What                                                                 | Runs on                  |
-| ----------------------------- | -------------------------------------------------------------------- | ------------------------ |
-| `@arki/geo`                   | `Coordinates`, `Bounds`, distance, bearing, bounds, formatting, failures | Node, Bun, Deno, browser |
-| `@arki/geo/geocoding`         | `GeocodingService`, `createGeocodingService`, `geocodingEnv`         | server                   |
-| `@arki/geo/react`             | everything in `@arki/geo`, plus `useCoordinates`, `useDistance`, `useBoundsFromCoordinates`, `useBoundsFromRadius` | browser, React |
-| `@arki/geo/react/google-maps` | `GoogleMapsProvider`, `GoogleMap`, `GoogleMarker`, `LocationPicker`, street view and polyline helpers | browser, React |
+| Entry                         | What                                                                                                               | Runs on                  |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------ |
+| `@arki/geo`                   | `Coordinates`, `Bounds`, distance, bearing, bounds, formatting, failures                                           | Node, Bun, Deno, browser |
+| `@arki/geo/geocoding`         | `GeocodingService`, `createGeocodingService`, `geocodingEnv`                                                       | server                   |
+| `@arki/geo/react`             | everything in `@arki/geo`, plus `useCoordinates`, `useDistance`, `useBoundsFromCoordinates`, `useBoundsFromRadius` | browser, React           |
+| `@arki/geo/react/google-maps` | `GoogleMapsProvider`, `GoogleMap`, `GoogleMarker`, `LocationPicker`, street view and polyline helpers              | browser, React           |
+| `@arki/geo/zod`               | `geocodeResultSchema`, `addressComponentsSchema`, `providerAttemptSchema`                                          | anywhere                 |
 
 Import `@arki/geo/geocoding` only on the server. It pulls in the geocoder libraries.
 
@@ -54,6 +55,42 @@ if (point.lat !== 48.8566) throw new Error('wrong latitude');
 const bad = parseCoordinates('north pole');
 if (!InvalidCoordinates.is(bad)) throw new Error('should fail');
 ```
+
+## When not to use this
+
+- You need routing, travel time or isochrones. This package gives straight-line (great-circle) distance.
+- You need geometry on a projected plane or polygon maths. Use a GIS library.
+- You need Mapbox or Leaflet components. Only Google Maps components ship today.
+
+## Runtime support
+
+The maths in `@arki/geo` is pure and runs on Node, Bun, Deno, browsers and Hermes. `@arki/geo/geocoding`
+runs on Node, Bun and Deno only: `node-geocoder` needs Node's `readline` (package.json `arki.entryRuntimes`).
+`@arki/geo/react` and `@arki/geo/react/google-maps` need React 18 or later.
+
+<!-- runtimes:start -->
+
+| Runtime | Result | Version tested        | Date (UTC) |
+| ------- | ------ | --------------------- | ---------- |
+| node    | pass   | v22.13.1              | 2026-11-05 |
+| bun     | pass   | 1.4.2                 | 2026-11-05 |
+| deno    | pass   | 2.9.8                 | 2026-11-05 |
+| browser | pass   | Chromium 156.0.8078.4 | 2026-11-05 |
+| hermes  | pass   | V1 250829098.0.17     | 2026-11-05 |
+
+- `./geocoding` runs on node, bun, deno (`scripts/smoke/geocoding.mjs`).
+
+<!-- runtimes:end -->
+
+## Public imports
+
+The table under [Install](#install) lists each entry with what it holds and where it runs. In short:
+
+- `@arki/geo`: `Coordinates`, `Bounds`, `calculateDistance`, `calculateBearing`, `bearingToDirection`, `validateCoordinates`, `parseCoordinates`, bounds and formatting helpers, and every failure.
+- `@arki/geo/geocoding`: `GeocodingService`, `createGeocodingService` and `geocodingEnv`. Server only.
+- `@arki/geo/react`: everything in `@arki/geo`, plus `useCoordinates`, `useDistance`, `useBoundsFromCoordinates` and `useBoundsFromRadius`.
+- `@arki/geo/react/google-maps`: `GoogleMapsProvider`, `GoogleMap`, `GoogleMarker`, `LocationPicker`, and street view and polyline helpers.
+- `@arki/geo/zod`: `geocodeResultSchema`, `addressComponentsSchema` and `providerAttemptSchema`, the Zod schemas behind the plain TS types, for callers that parse with Zod.
 
 ## Geocoding
 
@@ -97,8 +134,25 @@ Failures are returned as values. Check them with `.is(value)`.
   (`geo.no_address_at_location`, status 404) when no provider finds an address, such as a point at sea.
 - `batchGeocode(addresses, concurrency)` maps each address to what `geocode` returned for it.
 - Coordinate helpers return `InvalidCoordinates` for a value out of range or not a number.
+- Arguments that are the caller's own constants throw the invariant failure `ARKI_FAILURE_E008` (a bug to fix, not an outcome to handle): a `precision` that is not a finite number from 0 to 100 (`formatCoordinates`, `formatCoordinatesWithCardinals`, `roundCoordinates`, `formatBounds`), a bearing that is not finite (`bearingToDirection`), and a marker index that is not a whole number of at least 0 (`getMarkerColor`).
 
 Import every failure from `@arki/geo`.
+
+## Observability
+
+Spans from `@arki/geo/geocoding` (OpenTelemetry API only; nothing is exported until the app configures an SDK):
+
+| Span                                                                                 | When                                                                          | Attributes                                                                                                    |
+| ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `geo.geocode`, `geo.reverse_geocode`                                                 | each lookup                                                                   | `geo.cache` (`hit`, `miss` or `off`), `geo.provider` of the provider that answered, `failure.code` on failure |
+| `geo.<provider>.geocode`, `geo.<provider>.reverse_geocode` (`geo.nominatim.geocode`) | each provider call, under the lookup; a fallback makes one per provider tried | `geo.provider`, `failure.code` on failure                                                                     |
+| `geo.batch_geocode`                                                                  | each `batchGeocode`; each address is a `geo.geocode` under it                 | `geo.batch.size`, `failure.code` on failure                                                                   |
+
+A returned failure sets `failure.code`. The span status is error only for a fault: `geo.provider_rejected` (502) or `geo.provider_unreachable` (503). Nothing found, invalid coordinates, a rate limit and a cancellation leave it unset. The address, the coordinates, the cache key, provider messages and API keys are never attributes.
+
+Metrics: `geo.operations` (counter; `operation` = `geocode`, `reverse_geocode`, `batch_geocode` or `<provider>.<lookup>`, `outcome` = `success`, `failure` or `error`).
+
+Not instrumented: the cache read and write as their own spans — the lookup span says whether the cache answered (`geo.cache`), and an `@arki/kv` cache spans its own `kv.get` and `kv.set`. The root entry and `./react` — pure computation and map components, no I/O of their own.
 
 ## React
 
@@ -114,19 +168,19 @@ export function Away({ from, to }: { from: { lat: number; lng: number }; to: { l
 `useDistance` returns `null` when either point is `null`. Apps import the Google Maps components
 from `@arki/geo/react/google-maps` and never import `@vis.gl/react-google-maps` directly.
 
-## When not to use this
-
-- You need routing, travel time or isochrones. This package gives straight-line (great-circle) distance.
-- You need geometry on a projected plane or polygon maths. Use a GIS library.
-- You need Mapbox or Leaflet components. Only Google Maps components ship today.
-
-## Runtime support
-
-The maths in `@arki/geo` is pure and runs on Node, Bun, Deno and browsers. `@arki/geo/geocoding`
-needs Node or Bun. `@arki/geo/react` and `@arki/geo/react/google-maps` need React 18 or later in a browser.
-
 ## Limits
 
 - Distance uses the haversine formula on a sphere (Earth radius 6371 km). Error is up to about 0.5%.
 - The geocoding cache stores results by a hash of the address. It does not cache failures.
 - Provider rate limits and terms of use are yours to follow.
+
+## Documentation
+
+- [Agent guide](docs/agent-guide.md): the model, the task map, the rules that bite, the errors and how to verify.
+- [API reference](docs/api.md): every export.
+- [`llms.txt`](llms.txt): the short map an agent reads first.
+- [`AGENTS.md`](AGENTS.md): the laws for changing this package.
+
+## Support
+
+Questions and bugs: <https://github.com/arki-labs/arki/issues>. Include the package version, the geocoding provider and the failure `code`.

@@ -1,8 +1,3 @@
-/**
- * The expected ways a geo lookup can fail, each defined once. They are
- * returned, not thrown: a correct caller must branch on them.
- */
-import { z } from 'zod';
 /** Every provider that answered found nothing for this address. Not cached, so a later lookup asks again.
  * @fix Check the address for typos, or add detail such as the city and country.
  * @verify bun run test -- src/geocoding/service.test.ts
@@ -37,16 +32,6 @@ export declare const InvalidCoordinates: import("@arki/failure").FailureDefiniti
  * @verify bun run test -- src/geocoding/service.test.ts
  */
 export declare const GeocodingCancelled: import("@arki/failure").FailureDefinition<"geo.cancelled", undefined>;
-/** One provider's failed try, kept so a failure that ends the lookup still shows every provider. */
-export declare const providerAttemptSchema: z.ZodObject<{
-    provider: z.ZodString;
-    kind: z.ZodEnum<{
-        rate_limited: "rate_limited";
-        rejected: "rejected";
-        unreachable: "unreachable";
-    }>;
-    message: z.ZodString;
-}, z.core.$strip>;
 /** No provider answered and at least one said it is over its limit. `retryAfterMs` is that provider's `Retry-After`, when it sent one.
  * @fix Wait `retryAfterMs` (or back off) and retry, or add a provider to the fallback list.
  * @verify bun run test -- src/geocoding/service.test.ts
@@ -106,7 +91,15 @@ export declare const ProviderUnreachable: import("@arki/failure").FailureDefinit
         message: string;
     }[];
 }>>;
-export type ProviderAttempt = z.infer<typeof providerAttemptSchema>;
+/**
+ * One provider's failed try, kept so a failure that ends the lookup still shows every provider.
+ * `providerAttemptSchema` (`@arki/geo/zod`) checks it.
+ */
+export type ProviderAttempt = {
+    provider: string;
+    kind: 'rate_limited' | 'rejected' | 'unreachable';
+    message: string;
+};
 export type InvalidCoordinates = ReturnType<typeof InvalidCoordinates>;
 export type GeocodingCancelled = ReturnType<typeof GeocodingCancelled>;
 export type ProviderRateLimited = ReturnType<typeof ProviderRateLimited>;
